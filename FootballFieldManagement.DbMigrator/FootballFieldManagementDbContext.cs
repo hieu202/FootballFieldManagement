@@ -1,4 +1,5 @@
 ﻿using FootballFieldManagement.DbMigrator.Configurations;
+using FootballFieldManagement.Domain.Configurations;
 using FootballFieldManagement.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,6 +18,9 @@ namespace FootballFieldManagement.DbMigrator
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Time> Times { get; set; }
+        public DbSet<FieldPrice> FieldPrices { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("server=.;database=FootballFieldManagementDb;trusted_connection=true;TrustServerCertificate=True");
@@ -24,6 +28,14 @@ namespace FootballFieldManagement.DbMigrator
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UnitConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new FieldTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new FieldConfiguration());
+            modelBuilder.ApplyConfiguration(new FieldPriceConfiguration());
+            modelBuilder.ApplyConfiguration(new TimeConfiguration());
+            modelBuilder.ApplyConfiguration(new CustomerConfiguration());
         }
     }
 }

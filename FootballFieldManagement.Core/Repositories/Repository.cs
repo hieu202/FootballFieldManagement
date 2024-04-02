@@ -20,7 +20,7 @@ namespace FootballFieldManagement.Core.Repositories
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             var entry = await _dbContext.Set<TEntity>().AddAsync(entity);
-            _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return entry.Entity;
         }
 
@@ -35,11 +35,11 @@ namespace FootballFieldManagement.Core.Repositories
             return _dbContext.Set<TEntity>();
         }
 
-        public Task DeleteAsync(TEntity entity)
+        public async Task<TEntity> DeleteAsync(TEntity entity)
         {
-            _dbContext.Set<TEntity>().Remove(entity);
-            _dbContext.SaveChangesAsync();
-            return Task.CompletedTask;
+            var entry = _dbContext.Set<TEntity>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
+            return entry.Entity;
         }
 
         public Task DeleteRangeAsync(IEnumerable<TEntity> entities)
@@ -52,7 +52,7 @@ namespace FootballFieldManagement.Core.Repositories
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             var entry = _dbContext.Set<TEntity>().Update(entity);
-            _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return entry.Entity;
         }
 

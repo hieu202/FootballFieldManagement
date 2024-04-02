@@ -4,6 +4,7 @@ using FootballFieldManagement.DbMigrator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootballFieldManagement.DbMigrator.Migrations
 {
     [DbContext(typeof(FootballFieldManagementDbContext))]
-    partial class FootballFieldManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240329073401_updatev2")]
+    partial class updatev2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,35 +40,6 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("FootballFieldManagement.Domain.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("FootballFieldManagement.Domain.Models.Field", b =>
@@ -102,21 +76,10 @@ namespace FootballFieldManagement.DbMigrator.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("EndTime")
-                        .HasColumnType("float");
-
-                    b.Property<int>("FieldTypeId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<double>("StartTime")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("FieldTypeId");
 
                     b.ToTable("FieldPrices");
                 });
@@ -168,6 +131,9 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("PriceIn")
+                        .HasColumnType("float");
 
                     b.Property<double>("PriceOut")
                         .HasColumnType("float");
@@ -260,17 +226,6 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                 });
 
             modelBuilder.Entity("FootballFieldManagement.Domain.Models.Field", b =>
-                {
-                    b.HasOne("FootballFieldManagement.Domain.Models.FieldType", "FieldType")
-                        .WithMany()
-                        .HasForeignKey("FieldTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FieldType");
-                });
-
-            modelBuilder.Entity("FootballFieldManagement.Domain.Models.FieldPrice", b =>
                 {
                     b.HasOne("FootballFieldManagement.Domain.Models.FieldType", "FieldType")
                         .WithMany()

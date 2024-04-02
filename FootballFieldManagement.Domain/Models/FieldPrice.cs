@@ -10,10 +10,10 @@ namespace FootballFieldManagement.Domain.Models
     public class FieldPrice : DomainObject
     {
         public double Price { get; set; }
-        public DateTime DateApply { get; set; }
-        private int FieldTypeId { get; set; }
-        private FieldType FieldType { get; set; }
-        private int TimeId {  get; set; }
-        private Time Time { get; set; }
+        //public DateTime DateApply { get; set; }
+        public int FieldTypeId { get; set; }
+        public FieldType FieldType { get; set; }
+        public double StartTime { get; set; }
+        public double EndTime { get; set; }
     }
 }

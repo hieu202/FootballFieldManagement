@@ -5,14 +5,40 @@
              xmlns:vm="clr-namespace:FootballFieldManagement.UI.ViewModels"
              xmlns:view="clr-namespace:FootballFieldManagement.UI.Views">
     <Application.Resources>
-        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
-            <view:LoginView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:RegisterViewModel}">
-            <view:RegisterView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:MainContentViewModel}">
-            <view:MainContentView />
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/CommonTemplate.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+                <view:LoginView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:RegisterViewModel}">
+                <view:RegisterView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:MainContentViewModel}">
+                <view:MainContentView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:FieldTypeViewModel}">
+                <view:FieldTypeView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:FieldViewModel}">
+                <view:FieldView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:FieldPriceViewModel}">
+                <view:FieldPriceView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:UnitViewModel}">
+                <view:UnitView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:CategoryViewModel}">
+                <view:CategoryView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ProductViewModel}">
+                <view:ProductView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:CustomerViewModel}">
+                <view:CustomerView />
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

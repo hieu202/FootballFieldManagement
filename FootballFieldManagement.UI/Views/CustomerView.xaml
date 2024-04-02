@@ -1,14 +1,13 @@
-﻿<UserControl x:Class="FootballFieldManagement.UI.Views.FieldView"
+﻿<UserControl x:Class="FootballFieldManagement.UI.Views.CustomerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:FootballFieldManagement.UI.Views"
              xmlns:cvt="clr-namespace:FootballFieldManagement.App.Converters"
+             xmlns:local="clr-namespace:FootballFieldManagement.UI.Views"
              mc:Ignorable="d"
              d:DesignHeight="450"
-             d:DesignWidth="800"
-             Background="White">
+             d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
             <cvt:RowIndexConverter x:Key="RowIndexConverter" />
@@ -24,6 +23,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -31,26 +32,42 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0"
                   Grid.Column="0">
-                <TextBlock Text="Loại sân"
+                <TextBlock Text="Tên khách hàng"
                            Style="{StaticResource tblManage}" />
             </Grid>
             <Grid Grid.Row="1"
                   Grid.Column="0">
-                <TextBlock Text="Tên sân"
+                <TextBlock Text="Số điện thoại"
+                           Style="{StaticResource tblManage}" />
+            </Grid>
+            <Grid Grid.Row="2"
+                  Grid.Column="0">
+                <TextBlock Text="Địa chỉ"
+                           Style="{StaticResource tblManage}" />
+            </Grid>
+            <Grid Grid.Row="3"
+                  Grid.Column="0">
+                <TextBlock Text="Email"
                            Style="{StaticResource tblManage}" />
             </Grid>
             <Grid Grid.Row="0"
                   Grid.Column="1">
-                <ComboBox ItemsSource="{Binding ListFieldType}"
-                          DisplayMemberPath="Name"
-                          SelectedValuePath="Id"
-                          SelectedItem="{Binding SelectedFieldType}"
-                          Style="{StaticResource cboManage}" />
+                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource tbManage}" />
             </Grid>
             <Grid Grid.Row="1"
                   Grid.Column="1">
-
-                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource tbManage}" />
+            </Grid>
+            <Grid Grid.Row="2"
+                  Grid.Column="1">
+                <TextBox Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource tbManage}" />
+            </Grid>
+            <Grid Grid.Row="3"
+                  Grid.Column="1">
+                <TextBox Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource tbManage}" />
             </Grid>
         </Grid>
@@ -70,7 +87,7 @@
                     Height="40"
                     Grid.Column="1"
                     Content="Sửa"
-                    Command="{Binding SaveCommand}" />
+                    Command="{Binding UpdateCommand}" />
             <Button Height="40"
                     Grid.Column="2"
                     Content="Xóa"
@@ -81,8 +98,8 @@
             <DataGrid AutoGenerateColumns="False"
                       AlternatingRowBackground="AntiqueWhite"
                       AlternationCount="2"
-                      ItemsSource="{Binding ListField, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding Selected}">
+                      ItemsSource="{Binding ListCustomer, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding SelectedCustomer}">
                 <DataGrid.Columns>
                     <!-- Cột số thứ tự -->
                     <DataGridTextColumn Header="STT">
@@ -96,14 +113,21 @@
                             </MultiBinding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Name"
+                    <DataGridTextColumn Header="Tên"
                                         Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Field Type"
+                    <DataGridTextColumn Header="Số điện thoại"
                                         IsReadOnly="True"
-                                        Binding="{Binding Path=FieldType.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        Binding="{Binding Path=Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <DataGridTextColumn Header="Địa chỉ"
+                                        IsReadOnly="True"
+                                        Binding="{Binding Path=Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <DataGridTextColumn Header="Email"
+                                        IsReadOnly="True"
+                                        Binding="{Binding Path=Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
     </Grid>
 </UserControl>
+
 

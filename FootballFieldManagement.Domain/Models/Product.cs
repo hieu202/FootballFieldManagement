@@ -11,7 +11,7 @@ namespace FootballFieldManagement.Domain.Models
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public double PriceIn { get; set; }
+        //public double PriceIn { get; set; }
         public double PriceOut { get; set;}
 
         public int UnitId {  get; set; }

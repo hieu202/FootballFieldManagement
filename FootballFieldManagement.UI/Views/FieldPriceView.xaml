@@ -1,10 +1,12 @@
-﻿<UserControl x:Class="FootballFieldManagement.UI.Views.FieldView"
+﻿<UserControl x:Class="FootballFieldManagement.UI.Views.FieldPriceView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:FootballFieldManagement.UI.Views"
              xmlns:cvt="clr-namespace:FootballFieldManagement.App.Converters"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:j="clr-namespace:Terp.UI.CustomControls"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -24,6 +26,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -36,7 +40,17 @@
             </Grid>
             <Grid Grid.Row="1"
                   Grid.Column="0">
-                <TextBlock Text="Tên sân"
+                <TextBlock Text="Từ giờ"
+                           Style="{StaticResource tblManage}" />
+            </Grid>
+            <Grid Grid.Row="2"
+                  Grid.Column="0">
+                <TextBlock Text="Đến giờ"
+                           Style="{StaticResource tblManage}" />
+            </Grid>
+            <Grid Grid.Row="3"
+                  Grid.Column="0">
+                <TextBlock Text="Đơn giá"
                            Style="{StaticResource tblManage}" />
             </Grid>
             <Grid Grid.Row="0"
@@ -49,8 +63,25 @@
             </Grid>
             <Grid Grid.Row="1"
                   Grid.Column="1">
-
-                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Style="{StaticResource tbManage}"
+                         Text="{Binding StartTime, TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ConverterParameter=#\,##0.00}">
+                    <i:Interaction.Behaviors>
+                        <j:TextBoxInputBehavior InputMode="DecimalInput" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+            </Grid>
+            <Grid Grid.Row="2"
+                  Grid.Column="1">
+                <TextBox Style="{StaticResource tbManage}"
+                         Text="{Binding EndTime, TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ConverterParameter=#\,##0.00}">
+                    <i:Interaction.Behaviors>
+                        <j:TextBoxInputBehavior InputMode="DecimalInput" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+            </Grid>
+            <Grid Grid.Row="3"
+                  Grid.Column="1">
+                <TextBox Text="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource tbManage}" />
             </Grid>
         </Grid>
@@ -81,7 +112,7 @@
             <DataGrid AutoGenerateColumns="False"
                       AlternatingRowBackground="AntiqueWhite"
                       AlternationCount="2"
-                      ItemsSource="{Binding ListField, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding ListFieldPrice, UpdateSourceTrigger=PropertyChanged}"
                       SelectedItem="{Binding Selected}">
                 <DataGrid.Columns>
                     <!-- Cột số thứ tự -->
@@ -96,14 +127,19 @@
                             </MultiBinding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Name"
-                                        Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Field Type"
+                    <DataGridTextColumn Header="Loại sân"
                                         IsReadOnly="True"
                                         Binding="{Binding Path=FieldType.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <DataGridTextColumn Header="Từ giờ"
+                                        Binding="{Binding Path=StartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <DataGridTextColumn Header="Đến giờ"
+                                        Binding="{Binding Path=EndTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <DataGridTextColumn Header="Giá"
+                                        Binding="{Binding Path=Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
     </Grid>
 </UserControl>
+
 

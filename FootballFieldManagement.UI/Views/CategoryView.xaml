@@ -1,62 +1,46 @@
-﻿<UserControl x:Class="FootballFieldManagement.UI.Views.FieldView"
+﻿<UserControl x:Class="FootballFieldManagement.UI.Views.CategoryView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:FootballFieldManagement.UI.Views"
-             xmlns:cvt="clr-namespace:FootballFieldManagement.App.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Background="White">
+             xmlns:cvt="clr-namespace:FootballFieldManagement.App.Converters">
     <UserControl.Resources>
         <ResourceDictionary>
             <cvt:RowIndexConverter x:Key="RowIndexConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="70" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="50" />
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0"
-                  Grid.Column="0">
-                <TextBlock Text="Loại sân"
-                           Style="{StaticResource tblManage}" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="0"
+                  Grid.Row="0">
+                <TextBlock Style="{StaticResource tblManage}"
+                           Text="Loại hàng" />
             </Grid>
-            <Grid Grid.Row="1"
-                  Grid.Column="0">
-                <TextBlock Text="Tên sân"
-                           Style="{StaticResource tblManage}" />
-            </Grid>
-            <Grid Grid.Row="0"
-                  Grid.Column="1">
-                <ComboBox ItemsSource="{Binding ListFieldType}"
-                          DisplayMemberPath="Name"
-                          SelectedValuePath="Id"
-                          SelectedItem="{Binding SelectedFieldType}"
-                          Style="{StaticResource cboManage}" />
-            </Grid>
-            <Grid Grid.Row="1"
-                  Grid.Column="1">
-
-                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Style="{StaticResource tbManage}" />
+            <Grid Grid.Column="1"
+                  Grid.Row="0">
+                <TextBox Style="{StaticResource tbManage}"
+                         Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
         </Grid>
         <Grid Grid.Row="1"
-              Width="500"
-              Margin="0 10 0 0">
+              Margin="0 10 0 0"
+              Width="500">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -64,25 +48,23 @@
             </Grid.ColumnDefinitions>
             <Button Height="40"
                     Content="Thêm"
-                    Command="{Binding AddCommand}">
-            </Button>
+                    Command="{Binding AddCommand}" />
             <Button Margin="10 0"
                     Height="40"
                     Grid.Column="1"
                     Content="Sửa"
-                    Command="{Binding SaveCommand}" />
+                    Command="{Binding UpdateCommand}" />
             <Button Height="40"
                     Grid.Column="2"
                     Content="Xóa"
                     Command="{Binding DeleteCommand}" />
-
         </Grid>
         <Grid Grid.Row="2">
             <DataGrid AutoGenerateColumns="False"
                       AlternatingRowBackground="AntiqueWhite"
-                      AlternationCount="2"
-                      ItemsSource="{Binding ListField, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding ListCategory, UpdateSourceTrigger=PropertyChanged}"
                       SelectedItem="{Binding Selected}">
+
                 <DataGrid.Columns>
                     <!-- Cột số thứ tự -->
                     <DataGridTextColumn Header="STT">
@@ -92,18 +74,14 @@
                                          RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}" />
                                 <Binding Mode="OneWay"
                                          RelativeSource="{RelativeSource AncestorType={x:Type DataGrid}}"
-                                         Path="fields.Count" />
+                                         Path="fieldTypes.Count" />
                             </MultiBinding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Name"
+                    <DataGridTextColumn Header="Loại hàng"
                                         Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Field Type"
-                                        IsReadOnly="True"
-                                        Binding="{Binding Path=FieldType.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
     </Grid>
 </UserControl>
-
