@@ -21,6 +21,7 @@ namespace FootballFieldManagement.DbMigrator
         public DbSet<Time> Times { get; set; }
         public DbSet<FieldPrice> FieldPrices { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<FieldBookManagement> FieldBookManagements { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("server=.;database=FootballFieldManagementDb;trusted_connection=true;TrustServerCertificate=True");
@@ -36,6 +37,7 @@ namespace FootballFieldManagement.DbMigrator
             modelBuilder.ApplyConfiguration(new FieldPriceConfiguration());
             modelBuilder.ApplyConfiguration(new TimeConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new FieldBookManagementConfiguration());
         }
     }
 }

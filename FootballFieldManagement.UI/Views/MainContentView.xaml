@@ -155,6 +155,63 @@
                     </TreeViewItem.Header>
                 </TreeViewItem>
             </TreeViewItem>
+            <TreeViewItem IsExpanded="True">
+    <TreeViewItem.Header>
+        <StackPanel Orientation="Horizontal">
+            <Image Source="../Images/menu-bar.png"
+                   Height="16"
+                   Width="16"
+                   Margin="0, 0, 4, 0"></Image>
+            <TextBlock Text="Quản lý đặt sân" />
+        </StackPanel>
+    </TreeViewItem.Header>
+    <TreeViewItem IsExpanded="True">
+        <TreeViewItem.Header>
+            <Button Background="Transparent"
+                    Command="{Binding BookFieldCommand}"
+                    BorderThickness="0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../Images/field.png"
+                           Height="20"
+                           Width="20"
+                           Margin="0, 0, 4, 0"></Image>
+                    <TextBlock Text="Đặt sân" />
+                </StackPanel>
+            </Button>
+        </TreeViewItem.Header>
+    </TreeViewItem>
+    <TreeViewItem IsExpanded="True">
+        <TreeViewItem.Header>
+            <Button Background="Transparent"
+                                Command="{Binding FilterBookFieldCommand}"
+                    BorderThickness="0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../Images/field.png"
+                           Height="20"
+                           Width="20"
+                           Margin="0, 0, 4, 0"></Image>
+                    <TextBlock Text="Xem lịch đặt sân" />
+                </StackPanel>
+            </Button>
+        </TreeViewItem.Header>
+    </TreeViewItem>
+    <TreeViewItem IsExpanded="True">
+        <TreeViewItem.Header>
+            <Button Background="Transparent"
+                    Command="{Binding ProductCommand}"
+                    BorderThickness="0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../Images/field.png"
+                           Height="20"
+                           Width="20"
+                           Margin="0, 0, 4, 0"></Image>
+                    <TextBlock Text="Danh sách mặt hàng" />
+                </StackPanel>
+            </Button>
+        </TreeViewItem.Header>
+    </TreeViewItem>
+</TreeViewItem>
+            
         </TreeView>
         <Grid Grid.Column="1">
             <StackPanel Orientation="Horizontal"

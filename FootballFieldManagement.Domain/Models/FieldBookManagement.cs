@@ -9,6 +9,13 @@ namespace FootballFieldManagement.Domain.Models
 {
     public class FieldBookManagement : DomainObject
     {
-        public string State { get; set; }
+        public int FieldId;
+        public Field Field;
+        public int CustomerId;
+        public Customer Customer;
+        public DateTime DateApply;
+        public DateTime StartTime;
+        public DateTime EndTime;
+        public string Note;
     }
 }

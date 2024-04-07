@@ -1,0 +1,146 @@
+﻿<UserControl x:Class="FootballFieldManagement.UI.Views.FieldBookManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:FootballFieldManagement.UI.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0"
+                  Grid.Column="0">
+                <TextBlock Text="Khách hàng"
+                           Style="{StaticResource tblManage}" />
+            </Grid>
+            <Grid Grid.Row="1"
+                  Grid.Column="0">
+                <TextBlock Text="Tên sân"
+                           Style="{StaticResource tblManage}" />
+            </Grid>
+            <Grid Grid.Row="2"
+                  Grid.Column="0">
+                <TextBlock Text="Ngày đặt"
+                           Style="{StaticResource tblManage}" />
+            </Grid>
+            <Grid Grid.Row="0"
+                  Grid.Column="1">
+                <ComboBox ItemsSource="{Binding ListCustomer}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="Id"
+                          SelectedItem="{Binding SelectedCustomer}"
+                          Width="500"
+                          Height="40"
+                          HorizontalAlignment="Left"
+                          Margin="20 0 0 0" />
+            </Grid>
+            <Grid Grid.Row="1"
+                  Grid.Column="1">
+                <ComboBox ItemsSource="{Binding ListField}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="Id"
+                          SelectedItem="{Binding SelectedField}"
+                          HorizontalAlignment="Left"
+                          Margin="20 0 0 0"
+                          Width="500"
+                          Height="40" />
+            </Grid>
+            <Grid Grid.Row="2"
+                  Grid.Column="1">
+                <DatePicker Width="300"
+                            Margin="0 0 0 0"
+                            Height="40"
+                            FontSize="22"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <StackPanel VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <TextBlock Text="Từ giờ"
+                               FontSize="20"
+                               FontFamily="Arial"
+                               Margin="20 0 0 0"
+                               VerticalAlignment="Center" />
+                    <TextBox Width="90"
+                             Margin="72 0 0 0"
+                             Height="40"
+                             Text="{Binding StartTime}"/>
+                </StackPanel>
+
+            </Grid>
+            <Grid Grid.Column="1">
+                <TextBlock Text="Đến giờ"
+                           FontSize="20"
+                           FontFamily="Arial"
+                           Margin="20 0 0 0"
+                           VerticalAlignment="Center" />
+                <TextBox Width="90"
+                         Margin="15 0 0 0"
+                         Height="40" />
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <TextBlock Text="Ghi chú"
+                           Style="{StaticResource tblManage}" />
+            </Grid>
+            <Grid Grid.Column="1">
+                <TextBox Width="500"
+                         Height="40"
+                         HorizontalAlignment="Left"
+                         Margin="20 0 0 0" />
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="3"
+              Width="500"
+              Margin="0 10 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Height="40"
+                    Content="Thêm"
+                    Command="{Binding AddCommand}">
+            </Button>
+            <Button Margin="10 0"
+                    Height="40"
+                    Grid.Column="1"
+                    Content="Sửa"
+                    Command="{Binding SaveCommand}" />
+            <Button Height="40"
+                    Grid.Column="2"
+                    Content="Xóa"
+                    Command="{Binding DeleteCommand}" />
+
+        </Grid>
+    </Grid>
+</UserControl>

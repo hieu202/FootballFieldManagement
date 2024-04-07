@@ -39,6 +39,9 @@
             <DataTemplate DataType="{x:Type vm:CustomerViewModel}">
                 <view:CustomerView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:FieldBookManagementViewModel}">
+                <view:FieldBookManagementView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

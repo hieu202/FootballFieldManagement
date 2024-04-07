@@ -20,6 +20,7 @@ namespace FootballFieldManagement.UI.ViewModels
         public ICommand CategoryCommand { get; set; }
         public ICommand ProductCommand { get; set; }
         public ICommand CustomerCommand { get; set; }
+        public ICommand BookFieldCommand { get; set; }
         public User CurrentUser
         {
             get
@@ -66,6 +67,10 @@ namespace FootballFieldManagement.UI.ViewModels
             CustomerCommand = new RelayCommand<object>(p => true, p =>
             {
                 StaticClass.MainContent.CurrentViewModel= new CustomerViewModel();
+            });
+            BookFieldCommand = new RelayCommand<object>(p => true, p =>
+            {
+                StaticClass.MainContent.CurrentViewModel = new FieldBookManagementViewModel();
             });
         }
         private void OnCurrenViewModelChanged()
