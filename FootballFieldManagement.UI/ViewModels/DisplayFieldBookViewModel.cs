@@ -1,0 +1,112 @@
+﻿using FootballFieldManagement.Core.Repositories;
+using FootballFieldManagement.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Data;
+
+namespace FootballFieldManagement.UI.ViewModels
+{
+    public class DisplayFieldBookViewModel : BaseViewModel
+    {
+        private ObservableCollection<FieldBookManagement> _listFieldBook;
+
+        public ObservableCollection<FieldBookManagement> ListFieldBook
+        {
+            get { return _listFieldBook; }
+            set { _listFieldBook = value; OnPropertyChanged(); }
+        }
+        private ObservableCollection<Customer> _listCustomer;
+
+        public ObservableCollection<Customer> ListCustomer
+        {
+            get { return _listCustomer; }
+            set { _listCustomer = value; OnPropertyChanged(); }
+        }
+        private Customer _selectedCustomer;
+        public Customer SelectedCustomer
+        {
+            get { return _selectedCustomer; }
+            set
+            {
+                if (_selectedCustomer != value) // Chỉ thay đổi nếu khác
+                {
+                    _selectedCustomer = value;
+                    LoadData();
+                    OnPropertyChanged(nameof(SelectedCustomer));
+                }
+            }
+        }
+        private ObservableCollection<Field> _listField;
+
+        public ObservableCollection<Field> ListField
+        {
+            get { return _listField; }
+            set { _listField = value; OnPropertyChanged(); }
+        }
+        private Field _selectedField;
+        public Field SelectedField
+        {
+            get { return _selectedField; }
+            set
+            {
+                if (_selectedField != value) // Chỉ thay đổi nếu khác
+                {
+                    _selectedField = value;
+                    LoadData();
+                    OnPropertyChanged(nameof(SelectedField));
+                }
+            }
+        }
+        private ICollectionView _fieldBookCollectionView;
+
+        public ICollectionView FieldBookCollectionView
+        {
+            get { return _fieldBookCollectionView; }
+            set { _fieldBookCollectionView = value; OnPropertyChanged(); }
+        }
+        public DisplayFieldBookViewModel()
+        {
+            LoadData();
+        }
+        public IRepository<FieldBookManagement> _fieldBookRepository = new Repository<FieldBookManagement>(StaticClass.FootballFieldManagementDbContext);
+        public IRepository<Customer> _customerRepository = new Repository<Customer>(StaticClass.FootballFieldManagementDbContext);
+        public IRepository<Field> _fieldRepository = new Repository<Field>(StaticClass.FootballFieldManagementDbContext);
+        private void LoadData()
+        {
+            // Khởi tạo truy vấn với Include các thực thể liên quan
+            var query = _fieldBookRepository.AsQueryable()
+                .Include(x => x.Customer)
+                .Include(x => x.Field) as IQueryable<FieldBookManagement>; // Đảm bảo kiểu dữ liệu trả về phù hợp
+
+            // Xây dựng truy vấn sử dụng điều kiện
+            query = query.Where(x =>
+                (SelectedCustomer == null || x.Customer.Name == SelectedCustomer.Name) &&
+                (SelectedField == null || x.Field.Name == SelectedField.Name));
+
+            // Tạo ObservableCollection từ kết quả truy vấn
+            ListFieldBook = new ObservableCollection<FieldBookManagement>(query.ToList());
+            FieldBookCollectionView = CollectionViewSource.GetDefaultView(ListFieldBook);
+            FieldBookCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("Field.Name"));
+            ListCustomer = new ObservableCollection<Customer>(_customerRepository.AsQueryable().ToList());
+            ListField = new ObservableCollection<Field>(_fieldRepository.AsQueryable().ToList());
+            if (!ListCustomer.Any(c => c.Id == -1 && c.Name == "Tất cả"))
+            {
+                ListCustomer.Insert(0, new Customer { Id = -1, Name = "Tất cả" });
+                OnPropertyChanged(nameof(ListCustomer));
+            }
+            //SelectedCustomer = ListCustomer[0];
+            if (!ListField.Any(c => c.Id == -1 && c.Name == "Tất cả"))
+            {
+                ListField.Insert(0, new Field { Id = -1, Name = "Tất cả" });
+                OnPropertyChanged(nameof(ListField));
+            }
+
+        }
+    }
+}

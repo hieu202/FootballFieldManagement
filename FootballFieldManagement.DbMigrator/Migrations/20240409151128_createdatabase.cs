@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace FootballFieldManagement.DbMigrator.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDatabase : Migration
+    public partial class createdatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +25,22 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FieldTypes",
                 columns: table => new
                 {
@@ -37,6 +54,20 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FieldTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Times",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Times", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,6 +100,28 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FieldPrices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    FieldTypeId = table.Column<int>(type: "int", nullable: false),
+                    StartTime = table.Column<double>(type: "float", nullable: false),
+                    EndTime = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FieldPrices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FieldPrices_FieldTypes_FieldTypeId",
+                        column: x => x.FieldTypeId,
+                        principalTable: "FieldTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Fields",
                 columns: table => new
                 {
@@ -97,7 +150,6 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PriceIn = table.Column<double>(type: "float", nullable: false),
                     PriceOut = table.Column<double>(type: "float", nullable: false),
                     UnitId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
@@ -119,10 +171,55 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "FieldBookManagements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FieldId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    DateApply = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EndTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FieldBookManagements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FieldBookManagements_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FieldBookManagements_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "Password", "Phone", "UserName" },
                 values: new object[] { 1, "admin@gmail.com", "123456", "0123456", "admin" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldBookManagements_CustomerId",
+                table: "FieldBookManagements",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldBookManagements_FieldId",
+                table: "FieldBookManagements",
+                column: "FieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldPrices_FieldTypeId",
+                table: "FieldPrices",
+                column: "FieldTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Fields_FieldTypeId",
@@ -144,22 +241,34 @@ namespace FootballFieldManagement.DbMigrator.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Fields");
+                name: "FieldBookManagements");
+
+            migrationBuilder.DropTable(
+                name: "FieldPrices");
 
             migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
+                name: "Times");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "FieldTypes");
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "Fields");
 
             migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Unit");
+
+            migrationBuilder.DropTable(
+                name: "FieldTypes");
         }
     }
 }

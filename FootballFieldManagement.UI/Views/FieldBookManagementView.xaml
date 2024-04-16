@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:FootballFieldManagement.UI.Views"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -45,7 +46,7 @@
                 <ComboBox ItemsSource="{Binding ListCustomer}"
                           DisplayMemberPath="Name"
                           SelectedValuePath="Id"
-                          SelectedItem="{Binding SelectedCustomer}"
+                          SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}"
                           Width="500"
                           Height="40"
                           HorizontalAlignment="Left"
@@ -56,7 +57,7 @@
                 <ComboBox ItemsSource="{Binding ListField}"
                           DisplayMemberPath="Name"
                           SelectedValuePath="Id"
-                          SelectedItem="{Binding SelectedField}"
+                          SelectedItem="{Binding SelectedField, UpdateSourceTrigger=PropertyChanged}"
                           HorizontalAlignment="Left"
                           Margin="20 0 0 0"
                           Width="500"
@@ -69,7 +70,8 @@
                             Height="40"
                             FontSize="22"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"/>
+                            VerticalAlignment="Center"
+                            SelectedDate="{Binding Path=DateApply, Mode=TwoWay, TargetNullValue={x:Static System:DateTime.Now}, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="1">
@@ -88,7 +90,7 @@
                     <TextBox Width="90"
                              Margin="72 0 0 0"
                              Height="40"
-                             Text="{Binding StartTime}"/>
+                             Text="{Binding StartTime, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
 
             </Grid>
@@ -100,7 +102,8 @@
                            VerticalAlignment="Center" />
                 <TextBox Width="90"
                          Margin="15 0 0 0"
-                         Height="40" />
+                         Height="40"
+                         Text="{Binding EndTime, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="2">
@@ -116,7 +119,8 @@
                 <TextBox Width="500"
                          Height="40"
                          HorizontalAlignment="Left"
-                         Margin="20 0 0 0" />
+                         Margin="20 0 0 0" 
+                         Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="3"
@@ -135,7 +139,7 @@
                     Height="40"
                     Grid.Column="1"
                     Content="Sửa"
-                    Command="{Binding SaveCommand}" />
+                    Command="{Binding UpdateCommand}" />
             <Button Height="40"
                     Grid.Column="2"
                     Content="Xóa"

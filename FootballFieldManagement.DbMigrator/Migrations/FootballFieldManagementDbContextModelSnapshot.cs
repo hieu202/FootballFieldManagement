@@ -94,6 +94,44 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                     b.ToTable("Fields");
                 });
 
+            modelBuilder.Entity("FootballFieldManagement.Domain.Models.FieldBookManagement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateApply")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EndTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FieldId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StartTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("FieldId");
+
+                    b.ToTable("FieldBookManagements");
+                });
+
             modelBuilder.Entity("FootballFieldManagement.Domain.Models.FieldPrice", b =>
                 {
                     b.Property<int>("Id")
@@ -268,6 +306,25 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                         .IsRequired();
 
                     b.Navigation("FieldType");
+                });
+
+            modelBuilder.Entity("FootballFieldManagement.Domain.Models.FieldBookManagement", b =>
+                {
+                    b.HasOne("FootballFieldManagement.Domain.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FootballFieldManagement.Domain.Models.Field", "Field")
+                        .WithMany()
+                        .HasForeignKey("FieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Field");
                 });
 
             modelBuilder.Entity("FootballFieldManagement.Domain.Models.FieldPrice", b =>

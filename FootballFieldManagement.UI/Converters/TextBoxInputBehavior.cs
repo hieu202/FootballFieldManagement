@@ -123,8 +123,8 @@ namespace Terp.UI.CustomControls
             {
                 case TextBoxInputMode.None:
                     return true;
-                case TextBoxInputMode.DigitInput:
-                    return CheckIsDigit(input);
+/*                case TextBoxInputMode.DigitInput:
+                    return CheckIsDigit(input);*/
 
                 case TextBoxInputMode.DecimalInput:
                     decimal d;
@@ -168,7 +168,17 @@ namespace Terp.UI.CustomControls
                         // Nếu không thể chuyển đổi thành số thập phân, đầu vào không hợp lệ
                         return false;
                     }
+                /*                    if (string.IsNullOrEmpty(input) || input.Length != 5)
+                                        return false;
 
+                                    var parts = input.Split(':');
+                                    if (parts.Length != 2)
+                                        return false;
+
+                                    if (!int.TryParse(parts[0], out int hours) || !int.TryParse(parts[1], out int minutes))
+                                        return false;
+
+                                    return hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59;*/
 
 
                 default: throw new ArgumentException("Unknown TextBoxInputMode");

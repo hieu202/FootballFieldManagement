@@ -42,6 +42,9 @@
             <DataTemplate DataType="{x:Type vm:FieldBookManagementViewModel}">
                 <view:FieldBookManagementView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:DisplayFieldBookViewModel}">
+                <view:DisplayFieldBookView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
