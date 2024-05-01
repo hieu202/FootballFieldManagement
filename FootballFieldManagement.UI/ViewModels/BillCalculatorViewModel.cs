@@ -170,7 +170,7 @@ namespace FootballFieldManagement.UI.ViewModels
                 if (childWindow.ShowDialog() == false)
                 {
                     Product product = new Product();
-                    product = (ChildWindow)childWindow.dataGridProduct.SelectedValue as Product;
+                    product = childWindow.dataGridProduct.SelectedValue as Product;
                     product.Quality = 1;
                     if (product != null)
                     {
