@@ -90,20 +90,25 @@
                     <TextBox Width="90"
                              Margin="72 0 0 0"
                              Height="40"
-                             Text="{Binding StartTime, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding StartTime, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                    <TextBlock Text="{Binding ErrorValidateStartTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </StackPanel>
 
             </Grid>
             <Grid Grid.Column="1">
-                <TextBlock Text="Đến giờ"
+                <StackPanel VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <TextBlock Text="Đến giờ"
                            FontSize="20"
                            FontFamily="Arial"
                            Margin="20 0 0 0"
                            VerticalAlignment="Center" />
-                <TextBox Width="90"
+                    <TextBox Width="90"
                          Margin="15 0 0 0"
                          Height="40"
                          Text="{Binding EndTime, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{Binding ErrorValidateEndTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </StackPanel>
             </Grid>
         </Grid>
         <Grid Grid.Row="2">

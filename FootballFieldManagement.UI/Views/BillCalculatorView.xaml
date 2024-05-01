@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="FootballFieldManagement.UI.Views.BillCalculatorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:FootballFieldManagement.UI.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             Background="White">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       FontWeight="Bold"
+                       Text="{Binding FieldName, UpdateSourceTrigger=PropertyChanged}" />
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical">
+                    <GroupBox Header="Khách hàng">
+                        <ComboBox ItemsSource="{Binding ListCustomer}"
+                                  DisplayMemberPath="Name" />
+                    </GroupBox>
+                    <GroupBox Header="Ngày đá">
+                        <DatePicker></DatePicker>
+                    </GroupBox>
+                    <GroupBox Header="Giờ vào">
+                        <TextBox />
+                    </GroupBox>
+                    <GroupBox Header="Giờ ra">
+                        <TextBox />
+                    </GroupBox>
+                    <GroupBox Header="Số giờ thuê">
+                        <TextBox />
+                    </GroupBox>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <Button Content="Đổi giờ" />
+                    <Button Content="Bắt đầu"
+                            Command="{Binding StartCommand}" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="1">
+            <StackPanel Orientation="Vertical">
+                <GroupBox Header="Loại sân">
+                    <ComboBox ItemsSource="{Binding ListFieldType}"
+                              DisplayMemberPath="Name"
+                              SelectedItem="{Binding SelectedFieldType}" />
+                </GroupBox>
+                <ListView ItemsSource="{Binding ListGroup}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding FieldType}">
+                                <ListView x:Name="imageListBox"
+                                          Margin="10"
+                                          ItemsSource="{Binding ListImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{Binding FieldCommand}"
+                                                    CommandParameter="{Binding ContentImage}">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <StackPanel Orientation="Vertical">
+                                                            <Image Source="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                   Width="100"
+                                                                   Height="50" />
+                                                            <TextBlock Text="{Binding ContentImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"
+                                                                       FontWeight="Bold" />
+                                                        </StackPanel>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="3" />
+                                        </ItemsPanelTemplate>
+                                    </ListView.ItemsPanel>
+                                </ListView>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

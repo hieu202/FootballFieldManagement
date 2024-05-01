@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -43,14 +44,26 @@ namespace FootballFieldManagement.UI.ViewModels
         public string StartTime
         {
             get { return _startTime; }
-            set { _startTime = value; OnPropertyChanged(); }
+            set { _startTime = value; Validate(); OnPropertyChanged(); }
         }
         private string _endTime;
 
         public string EndTime
         {
             get { return _endTime; }
-            set { _endTime = value; OnPropertyChanged(); }
+            set { _endTime = value; OnPropertyChanged(); Validate(); }
+        }
+        public string _errorValidateStartTime;
+        public string ErrorValidateStartTime
+        {
+            get { return _errorValidateStartTime; }
+            set { _errorValidateStartTime = value; OnPropertyChanged(); }
+        }
+        public string _errorValidateEndTime;
+        public string ErrorValidateEndTime
+        {
+            get { return _errorValidateEndTime; }
+            set { _errorValidateEndTime = value; OnPropertyChanged(); }
         }
         private string _note;
 
@@ -63,6 +76,7 @@ namespace FootballFieldManagement.UI.ViewModels
         public ICommand AddCommand { get; set; }
         public FieldBookManagementViewModel()
         {
+            Validate();
             LoadCombox();
             AddCommand = new RelayCommand<object>(p =>
             {
@@ -71,22 +85,32 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 try
                 {
-                    var fieldBookManagement = new FieldBookManagement()
+                    var pricesQuery = _bookRepository.AsQueryable().Where(x => x.DateApply.Date == DateApply.Date && x.FieldId == SelectedField.Id).ToList();
+                    if (pricesQuery.Any() && (StaticClass.ConvertTimeToDecimal(StartTime) < pricesQuery.Max(x => StaticClass.ConvertTimeToDecimal(x.EndTime))
+                    || StaticClass.ConvertTimeToDecimal(EndTime) < pricesQuery.Min(x => StaticClass.ConvertTimeToDecimal(x.StartTime))))
                     {
-                        CustomerId = SelectedCustomer.Id,
-                        FieldId = SelectedField.Id,
-                        DateApply = DateApply,
-                        StartTime = StartTime,
-                        EndTime = EndTime,
-                        Note = Note,
-                    };
-                    fieldBookManagement = await _bookRepository.AddAsync(fieldBookManagement);
-                    if(fieldBookManagement != null )
+                        MessageBox.Show("Trùng giờ");
+                    }
+                    else
                     {
-                        MessageBox.Show("Thêm lịch đặt sân thành công");
-                    } else
-                    {
-                        MessageBox.Show("Lỗi hệ thống");
+                        var fieldBookManagement = new FieldBookManagement()
+                        {
+                            CustomerId = SelectedCustomer.Id,
+                            FieldId = SelectedField.Id,
+                            DateApply = DateApply,
+                            StartTime = StartTime,
+                            EndTime = EndTime,
+                            Note = Note,
+                        };
+                        fieldBookManagement = await _bookRepository.AddAsync(fieldBookManagement);
+                        if (fieldBookManagement != null)
+                        {
+                            MessageBox.Show("Thêm lịch đặt sân thành công");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Lỗi hệ thống");
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -107,6 +131,26 @@ namespace FootballFieldManagement.UI.ViewModels
             SelectedCustomer = _customerRepository.AsQueryable().FirstOrDefault();
             SelectedField = _fieldRepository.AsQueryable().FirstOrDefault();
         }
-
+        public void Validate()
+        {
+            if (StartTime != null && IsValidTime(StartTime) == false)
+            {
+                ErrorValidateStartTime = "Sai định dạng xy:zt";
+            }
+            else if (EndTime != null && IsValidTime(EndTime) == false)
+            {
+                ErrorValidateEndTime = "Sai định dạng xy:zt";
+            }
+            else
+            {
+                ErrorValidateStartTime = "";
+                ErrorValidateEndTime = "";
+            }
+        }
+        public static bool IsValidTime(string input)
+        {
+            Regex regex = new Regex(@"^(?:[01][0-9]|2[0-3]):[0-5][0-9]$");
+            return regex.IsMatch(input);
+        }
     }
 }
