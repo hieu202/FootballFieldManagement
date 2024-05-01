@@ -210,9 +210,6 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                     b.Property<double>("PriceOut")
                         .HasColumnType("float");
 
-                    b.Property<int?>("Quality")
-                        .HasColumnType("int");
-
                     b.Property<int>("UnitId")
                         .HasColumnType("int");
 
