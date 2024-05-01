@@ -17,6 +17,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        FontWeight="Bold"
@@ -48,6 +49,38 @@
                     <Button Content="Đổi giờ" />
                     <Button Content="Bắt đầu"
                             Command="{Binding StartCommand}" />
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Số lượng" />
+                        <TextBox Width="50"
+                                 Text="{Binding Quality, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Command="{Binding SaveProductCommand}"
+                                Content="Lưu" />
+                        <Button Command="{Binding AddProductCommand}"
+                                Content="Thêm" />
+                    </StackPanel>
+                    <DataGrid AutoGenerateColumns="False"
+                              AlternatingRowBackground="AntiqueWhite"
+                              ItemsSource="{Binding ListProduct, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã hàng"
+                                                Binding="{Binding Path=Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <DataGridTextColumn Header="Tên hàng"
+                                                Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <DataGridTextColumn Header="Đơn vị"
+                                                Binding="{Binding Path=Unit.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <DataGridTextColumn Header="Loại hàng"
+                                                Binding="{Binding Path=Category.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <DataGridTextColumn Header="Giá bán"
+                                                Binding="{Binding Path=PriceOut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <DataGridTextColumn Header="Số lượng"
+                                                Binding="{Binding Path=Quality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </StackPanel>
             </Grid>
         </Grid>

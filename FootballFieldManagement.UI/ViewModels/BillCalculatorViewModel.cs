@@ -2,6 +2,7 @@
 using FootballFieldManagement.Core.Repositories;
 using FootballFieldManagement.Domain.Models;
 using FootballFieldManagement.UI.Commands;
+using FootballFieldManagement.UI.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -61,6 +62,12 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _listFieldType; }
             set { _listFieldType = value; }
         }
+        private ObservableCollection<Product> _listProduct = new ObservableCollection<Product>();
+        public ObservableCollection<Product> ListProduct
+        {
+            get { return _listProduct; }
+            set { _listProduct = value; }
+        }
         private ObservableCollection<Customer> _listCustomer;
 
         public ObservableCollection<Customer> ListCustomer
@@ -87,11 +94,35 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _selectedCustomer; }
             set { _selectedCustomer = value; OnPropertyChanged(); }
         }
+        private Product _selectedProduct;
+        public Product SelectedProduct
+        {
+            get { return _selectedProduct; }
+            set
+            {
+                _selectedProduct = value;
+                if (SelectedProduct != null)
+                {
+                    Quality = SelectedProduct.Quality.ToString();
+                }
+                OnPropertyChanged();
+            }
+        }
+        private string _quality;
+
+        public string Quality
+        {
+            get { return _quality; }
+            set { _quality = value; OnPropertyChanged(); }
+        }
+
         public ICommand StartCommand { get; set; }
         IRepository<Field> _fieldRepository = new Repository<Field>(StaticClass.FootballFieldManagementDbContext);
         IRepository<FieldType> _fieldTypeRepository = new Repository<FieldType>(StaticClass.FootballFieldManagementDbContext);
         IRepository<Customer> _customerRepository = new Repository<Customer>(StaticClass.FootballFieldManagementDbContext);
         public ICommand FieldCommand { get; set; }
+        public ICommand AddProductCommand { get; set; }
+        public ICommand SaveProductCommand { get; set; }
         public BillCalculatorViewModel()
         {
             LoadCombobox();
@@ -101,14 +132,62 @@ namespace FootballFieldManagement.UI.ViewModels
                 return true;
             }, async p =>
             {
-/*                for (int i = 0; i < ListField.Count; i++)
+                for (int i = 0; i < ListFieldType.Count; i++)
                 {
-                    if (ListImage[i].ContentImage == FieldName)
+                    ListField = new ObservableCollection<Field>(_fieldRepository.AsQueryable().Where(x => x.FieldTypeId == ListFieldType[i].Id).ToList());
+                    for (int j = 0; j < ListField.Count; j++)
                     {
-                        ListImage[i].ImagePath = "D:\\Do An\\FootballFieldManagement\\FootballFieldManagement.UI\\Images\\do-book.png";
-                        break;
+                        if (ListGroup[i].ListImage[j].ContentImage == FieldName)
+                        {
+                            ListGroup[i].ListImage[j].ImagePath = "D:\\Do An\\FootballFieldManagement\\FootballFieldManagement.UI\\Images\\do-book.png";
+                            break;
+                        }
                     }
-                }*/
+                }
+            });
+            AddProductCommand = new RelayCommand<object>(p =>
+            {
+                if (FieldName == null)
+                {
+                    return false;
+                }
+                for (int i = 0; i < ListFieldType.Count; i++)
+                {
+                    ListField = new ObservableCollection<Field>(_fieldRepository.AsQueryable().Where(x => x.FieldTypeId == ListFieldType[i].Id).ToList());
+                    for (int j = 0; j < ListField.Count; j++)
+                    {
+                        if (ListGroup[i].ListImage[j].ContentImage == FieldName)
+                        {
+                            if (ListGroup[i].ListImage[j].ImagePath != "D:\\Do An\\FootballFieldManagement\\FootballFieldManagement.UI\\Images\\do-book.png")
+                                return false;
+                        }
+                    }
+                }
+                return true;
+            }, p =>
+            {
+                ChildWindow childWindow = new ChildWindow();
+                if (childWindow.ShowDialog() == false)
+                {
+                    Product product = new Product();
+                    product = (ChildWindow)childWindow.dataGridProduct.SelectedValue as Product;
+                    product.Quality = 1;
+                    if (product != null)
+                    {
+                        ListProduct.Add(product);
+                    }
+                }
+            });
+            SaveProductCommand = new RelayCommand<object>(p =>
+            {
+                if (SelectedProduct == null)
+                {
+                    return false;
+                }
+                return true;
+            }, p =>
+            {
+                SelectedProduct.Quality = int.Parse(Quality);
             });
         }
         private void LoadCombobox()

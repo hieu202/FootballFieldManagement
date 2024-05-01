@@ -18,5 +18,6 @@ namespace FootballFieldManagement.Domain.Models
         public Unit Unit { get; set; }
         public int CategoryId {  get; set; }
         public Category Category { get; set; }
+        public int? Quality { get; set; }
     }
 }
