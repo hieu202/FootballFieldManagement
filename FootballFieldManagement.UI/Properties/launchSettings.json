@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "FootballFieldManagement.UI": {
-      "commandName": "Project",
-      "workingDirectory": "D:\\Do An\\FootballFieldManagement\\FootballFieldManagement.UI\\bin\\Debug\\net8.0-windows8.0"
-    }
-  }
-}

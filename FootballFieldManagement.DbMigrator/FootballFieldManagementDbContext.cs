@@ -24,7 +24,7 @@ namespace FootballFieldManagement.DbMigrator
         public DbSet<FieldBookManagement> FieldBookManagements { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"server=.\SQLEXPRESS;database=FootballFieldManagementDb;trusted_connection=true;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer(@"server=.;database=FootballFieldManagementDb;trusted_connection=true;TrustServerCertificate=True");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
