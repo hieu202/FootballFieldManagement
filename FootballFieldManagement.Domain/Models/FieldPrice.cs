@@ -13,7 +13,7 @@ namespace FootballFieldManagement.Domain.Models
         //public DateTime DateApply { get; set; }
         public int FieldTypeId { get; set; }
         public FieldType FieldType { get; set; }
-        public double StartTime { get; set; }
-        public double EndTime { get; set; }
+/*        public string StartTime { get; set; }
+        public string EndTime { get; set; }*/
     }
 }

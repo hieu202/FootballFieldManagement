@@ -64,19 +64,13 @@
             <Grid Grid.Row="1"
                   Grid.Column="1">
                 <TextBox Style="{StaticResource tbManage}"
-                         Text="{Binding StartTime, TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ConverterParameter=#\,##0.00}">
-                    <i:Interaction.Behaviors>
-                        <j:TextBoxInputBehavior InputMode="DecimalInput" />
-                    </i:Interaction.Behaviors>
+                         Text="{Binding StartTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }">
                 </TextBox>
             </Grid>
             <Grid Grid.Row="2"
                   Grid.Column="1">
                 <TextBox Style="{StaticResource tbManage}"
-                         Text="{Binding EndTime, TargetNullValue='', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ConverterParameter=#\,##0.00}">
-                    <i:Interaction.Behaviors>
-                        <j:TextBoxInputBehavior InputMode="DecimalInput" />
-                    </i:Interaction.Behaviors>
+                         Text="{Binding EndTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 </TextBox>
             </Grid>
             <Grid Grid.Row="3"

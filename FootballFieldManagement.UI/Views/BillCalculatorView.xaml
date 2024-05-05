@@ -16,8 +16,9 @@
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        FontWeight="Bold"
@@ -36,13 +37,13 @@
                         <DatePicker></DatePicker>
                     </GroupBox>
                     <GroupBox Header="Giờ vào">
-                        <TextBox />
+                        <TextBox Text="{Binding StartTime}" />
                     </GroupBox>
                     <GroupBox Header="Giờ ra">
-                        <TextBox />
+                        <TextBox Text="{Binding EndTime}" />
                     </GroupBox>
                     <GroupBox Header="Số giờ thuê">
-                        <TextBox />
+                        <TextBox Text="{Binding PlayTime}" />
                     </GroupBox>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
@@ -83,6 +84,39 @@
                     </DataGrid>
                 </StackPanel>
             </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="4*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <Button Content="In phiếu" />
+                    <Button Content="Hủy sân" />
+                </StackPanel>
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Text="Tiền sân" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="Tiền mặt hàng" />
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="0"
+                               Text="Thành tiền" />
+                    <TextBox Text="{Binding FieldPrice}" Grid.Row="0" Grid.Column="1"/>
+                    <TextBox Text="{Binding ProductPrice}" Grid.Row="1" Grid.Column="1"/>
+                    <TextBox Text="{Binding Total}" Grid.Row="2" Grid.Column="1"/>
+                </Grid>
+            </Grid>
         </Grid>
         <Grid Grid.Column="1">
             <StackPanel Orientation="Vertical">
@@ -94,7 +128,7 @@
                 <ListView ItemsSource="{Binding ListGroup}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding FieldType}">
+                            <Expander Header="{Binding FieldType}">
                                 <ListView x:Name="imageListBox"
                                           Margin="10"
                                           ItemsSource="{Binding ListImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -124,7 +158,7 @@
                                         </ItemsPanelTemplate>
                                     </ListView.ItemsPanel>
                                 </ListView>
-                            </TextBlock>
+                            </Expander>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

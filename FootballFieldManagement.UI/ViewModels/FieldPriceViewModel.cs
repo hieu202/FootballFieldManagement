@@ -63,38 +63,42 @@ namespace FootballFieldManagement.UI.ViewModels
             LoadComboBox();
             AddCommand = new RelayCommand<object>(p =>
             {
+                if (String.IsNullOrEmpty(StartTime) || String.IsNullOrEmpty(EndTime) || String.IsNullOrEmpty(Price))
+                    return false;
                 return true;
             }, async p =>
             {
                 try
                 {
-                    var pricesQuery = _fieldPriceRepository.AsQueryable().Where(x => x.FieldTypeId == SelectedFieldType.Id);
-                    if (pricesQuery.Any() && (Double.Parse(StartTime) < pricesQuery.Max(x => x.EndTime)
-                    || Double.Parse(EndTime) < pricesQuery.Min(x => x.StartTime)))
+                    /*                    var pricesQuery = _fieldPriceRepository.AsQueryable().Where(x => x.FieldTypeId == SelectedFieldType.Id).ToList();
+                                        if (pricesQuery.Any() && (StaticClass.ConvertTimeToDecimal(StartTime) < pricesQuery.Max(x => StaticClass.ConvertTimeToDecimal(x.EndTime))
+                                        || StaticClass.ConvertTimeToDecimal(EndTime) < pricesQuery.Min(x => StaticClass.ConvertTimeToDecimal(x.StartTime))))
+                                        {
+                                            MessageBox.Show("Trùng giờ");
+                                        }
+                                        else
+                                        {*/
+                    var newFieldPrice = new FieldPrice()
                     {
-                        MessageBox.Show("Trùng giờ");
+                        FieldTypeId = SelectedFieldType.Id,
+                        /*         StartTime = StartTime,
+                                 EndTime = EndTime,*/
+                        Price = Double.Parse(Price)
+                    };
+                    newFieldPrice = await _fieldPriceRepository.AddAsync(newFieldPrice);
+                    if (newFieldPrice != null)
+                    {
+                        MessageBox.Show("Thêm giá sân thành công");
+                        LoadData();
+
                     }
                     else
                     {
-                        var newFieldPrice = new FieldPrice()
-                        {
-                            FieldTypeId = SelectedFieldType.Id,
-                            StartTime = Double.Parse(StartTime),
-                            EndTime = Double.Parse(EndTime),
-                            Price = Double.Parse(Price)
-                        };
-                        newFieldPrice = await _fieldPriceRepository.AddAsync(newFieldPrice);
-                        if (newFieldPrice != null)
-                        {
-                            MessageBox.Show("Thêm giá sân thành công");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Lỗi hệ thống");
-                        }
+                        MessageBox.Show("Lỗi hệ thống");
                     }
-
                 }
+
+
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);

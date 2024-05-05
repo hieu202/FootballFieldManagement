@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -53,34 +54,41 @@ namespace FootballFieldManagement.UI.ViewModels
         public ObservableCollection<Field> ListField
         {
             get { return _listField; }
-            set { _listField = value; }
+            set { _listField = value; OnPropertyChanged(); }
         }
         private ObservableCollection<FieldType> _listFieldType;
 
         public ObservableCollection<FieldType> ListFieldType
         {
             get { return _listFieldType; }
-            set { _listFieldType = value; }
+            set { _listFieldType = value; OnPropertyChanged(); }
         }
         private ObservableCollection<Product> _listProduct = new ObservableCollection<Product>();
         public ObservableCollection<Product> ListProduct
         {
             get { return _listProduct; }
-            set { _listProduct = value; }
+            set { _listProduct = value; OnPropertyChanged(); CalculatorProduct(); }
         }
         private ObservableCollection<Customer> _listCustomer;
 
         public ObservableCollection<Customer> ListCustomer
         {
             get { return _listCustomer; }
-            set { _listCustomer = value; }
+            set { _listCustomer = value; OnPropertyChanged(); }
         }
         private ObservableCollection<Group> _listGroup;
 
         public ObservableCollection<Group> ListGroup
         {
             get { return _listGroup; }
-            set { _listGroup = value; }
+            set { _listGroup = value; OnPropertyChanged(); }
+        }
+        private ObservableCollection<FieldPrice> _listFieldPrice;
+
+        public ObservableCollection<FieldPrice> ListFieldPrice
+        {
+            get { return _listFieldPrice; }
+            set { _listFieldPrice = value; OnPropertyChanged(); }
         }
         private FieldType _selectedFieldType;
         public FieldType SelectedFieldType
@@ -115,11 +123,55 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _quality; }
             set { _quality = value; OnPropertyChanged(); }
         }
+        private string _fieldPrice;
+
+        public string FieldPrice
+        {
+            get { return _fieldPrice; }
+            set { _fieldPrice = value; OnPropertyChanged(); }
+        }
+        private string _productPrice;
+
+        public string ProductPrice
+        {
+            get { return _productPrice; }
+            set { _productPrice = value; OnPropertyChanged(); }
+        }
+        private string _total;
+
+        public string Total
+        {
+            get { return _total; }
+            set { _total = value; OnPropertyChanged(); }
+        }
+        private string _startTime;
+
+        public string StartTime
+        {
+            get { return _startTime; }
+            set { _startTime = value; OnPropertyChanged(); }
+        }
+        private string _endTime;
+
+        public string EndTime
+        {
+            get { return _endTime; }
+            set { _endTime = value; OnPropertyChanged(); }
+        }
+        private string _playTime;
+
+        public string PlayTime
+        {
+            get { return _playTime; }
+            set { _playTime = value; OnPropertyChanged(); }
+        }
+
 
         public ICommand StartCommand { get; set; }
         IRepository<Field> _fieldRepository = new Repository<Field>(StaticClass.FootballFieldManagementDbContext);
         IRepository<FieldType> _fieldTypeRepository = new Repository<FieldType>(StaticClass.FootballFieldManagementDbContext);
         IRepository<Customer> _customerRepository = new Repository<Customer>(StaticClass.FootballFieldManagementDbContext);
+        IRepository<FieldPrice> _fieldPriceRepository = new Repository<FieldPrice>(StaticClass.FootballFieldManagementDbContext);
         public ICommand FieldCommand { get; set; }
         public ICommand AddProductCommand { get; set; }
         public ICommand SaveProductCommand { get; set; }
@@ -127,6 +179,10 @@ namespace FootballFieldManagement.UI.ViewModels
         {
             LoadCombobox();
             Load();
+            if (ListProduct.Count > 0)
+            {
+                CalculatorProduct();
+            }
             StartCommand = new RelayCommand<object>(p =>
             {
                 return true;
@@ -171,10 +227,11 @@ namespace FootballFieldManagement.UI.ViewModels
                 {
                     Product product = new Product();
                     product = childWindow.dataGridProduct.SelectedValue as Product;
-                    product.Quality = 1;
                     if (product != null)
                     {
+                        product.Quality = 1;
                         ListProduct.Add(product);
+                        CalculatorProduct();
                     }
                 }
             });
@@ -187,7 +244,15 @@ namespace FootballFieldManagement.UI.ViewModels
                 return true;
             }, p =>
             {
-                SelectedProduct.Quality = int.Parse(Quality);
+                ObservableCollection<Product> products = new ObservableCollection<Product>(ListProduct);
+                for (int i = 0; i < products.Count; i++)
+                {
+                    if (products[i].Code == SelectedProduct.Code)
+                    {
+                        products[i].Quality = int.Parse(Quality);
+                    }
+                }
+                ListProduct = new ObservableCollection<Product>(products);
             });
         }
         private void LoadCombobox()
@@ -219,6 +284,53 @@ namespace FootballFieldManagement.UI.ViewModels
                 Group.ListImage = ListImage;
                 ListGroup.Add(Group);
             }
+        }
+        private void CalculatorProduct()
+        {
+            Double Total = 0;
+            for (int i = 0; i < ListProduct.Count; i++)
+            {
+                Total += ListProduct[i].PriceOut * (int)ListProduct[i].Quality;
+            }
+            ProductPrice = Total.ToString();
+        }
+        private void CalculatorFieldPrice()
+        {
+            int FieldTypeId = _fieldRepository.AsQueryable().FirstOrDefault(x => x.Name == FieldName).FieldTypeId;
+            ListFieldPrice = new ObservableCollection<FieldPrice>(_fieldPriceRepository.AsQueryable().Where(x => x.FieldTypeId == FieldTypeId).ToList());
+        }
+        private void CalculatorPlayTime()
+        {
+            if (String.IsNullOrEmpty(StartTime) || String.IsNullOrEmpty(EndTime) || IsValidTime(StartTime) == false || IsValidTime(EndTime) == false)
+            {
+                PlayTime = "";
+            } else
+            {
+                double starttime = StaticClass.ConvertTimeToDecimal(StartTime);
+                double endtime = StaticClass.ConvertTimeToDecimal(EndTime);
+                PlayTime = (starttime - endtime).ToString();
+            }
+        }
+        /*public void Validate()
+        {
+            if (StartTime != null && IsValidTime(StartTime) == false)
+            {
+                ErrorValidateStartTime = "Sai định dạng xy:zt";
+            }
+            else if (EndTime != null && IsValidTime(EndTime) == false)
+            {
+                ErrorValidateEndTime = "Sai định dạng xy:zt";
+            }
+            else
+            {
+                ErrorValidateStartTime = "";
+                ErrorValidateEndTime = "";
+            }
+        }*/
+        public static bool IsValidTime(string input)
+        {
+            Regex regex = new Regex(@"^(?:[01][0-9]|2[0-3]):[0-5][0-9]$");
+            return regex.IsMatch(input);
         }
     }
 }
