@@ -4,6 +4,7 @@ using FootballFieldManagement.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,19 @@ namespace FootballFieldManagement.UI.ViewModels
                 OnPropertyChanged();
             }
         }
+        private FieldPrice _selectedFieldPrice;
+        public FieldPrice SelectedFieldPrice
+        {
+            get
+            {
+                return _selectedFieldPrice;
+            }
+            set
+            {
+                _selectedFieldPrice = value;
+                OnPropertyChanged();
+            }
+        }
         private string _price;
 
         public string Price
@@ -39,22 +53,8 @@ namespace FootballFieldManagement.UI.ViewModels
             set { _price = value; }
         }
         private string _startTime;
-
-        public string StartTime
-        {
-            get { return _startTime; }
-            set { _startTime = value; }
-        }
-        private string _endTime;
-
-        public string EndTime
-        {
-            get { return _endTime; }
-            set { _endTime = value; }
-        }
-
-
         public ICommand AddCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
         private IRepository<FieldType> _fieldTypeRepository = new Repository<FieldType>(StaticClass.FootballFieldManagementDbContext);
         private IRepository<FieldPrice> _fieldPriceRepository = new Repository<FieldPrice>(StaticClass.FootballFieldManagementDbContext);
         public FieldPriceViewModel()
@@ -63,26 +63,17 @@ namespace FootballFieldManagement.UI.ViewModels
             LoadComboBox();
             AddCommand = new RelayCommand<object>(p =>
             {
-                if (String.IsNullOrEmpty(StartTime) || String.IsNullOrEmpty(EndTime) || String.IsNullOrEmpty(Price))
+                if (String.IsNullOrEmpty(Price))
                     return false;
                 return true;
             }, async p =>
             {
                 try
                 {
-                    /*                    var pricesQuery = _fieldPriceRepository.AsQueryable().Where(x => x.FieldTypeId == SelectedFieldType.Id).ToList();
-                                        if (pricesQuery.Any() && (StaticClass.ConvertTimeToDecimal(StartTime) < pricesQuery.Max(x => StaticClass.ConvertTimeToDecimal(x.EndTime))
-                                        || StaticClass.ConvertTimeToDecimal(EndTime) < pricesQuery.Min(x => StaticClass.ConvertTimeToDecimal(x.StartTime))))
-                                        {
-                                            MessageBox.Show("Trùng giờ");
-                                        }
-                                        else
-                                        {*/
                     var newFieldPrice = new FieldPrice()
                     {
                         FieldTypeId = SelectedFieldType.Id,
-                        /*         StartTime = StartTime,
-                                 EndTime = EndTime,*/
+
                         Price = Double.Parse(Price)
                     };
                     newFieldPrice = await _fieldPriceRepository.AddAsync(newFieldPrice);
@@ -97,12 +88,20 @@ namespace FootballFieldManagement.UI.ViewModels
                         MessageBox.Show("Lỗi hệ thống");
                     }
                 }
-
-
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+            });
+
+            DeleteCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, async p =>
+            {
+                await _fieldPriceRepository.DeleteAsync(SelectedFieldPrice);
+                MessageBox.Show("Xóa giá sân thành công");
+                LoadData();
             });
         }
         private void LoadComboBox()

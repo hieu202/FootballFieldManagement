@@ -128,14 +128,14 @@ namespace FootballFieldManagement.UI.ViewModels
         public string FieldPrice
         {
             get { return _fieldPrice; }
-            set { _fieldPrice = value; OnPropertyChanged(); }
+            set { _fieldPrice = value; OnPropertyChanged(); CalculatorTotal(); }
         }
         private string _productPrice;
 
         public string ProductPrice
         {
             get { return _productPrice; }
-            set { _productPrice = value; OnPropertyChanged(); }
+            set { _productPrice = value; OnPropertyChanged(); CalculatorTotal(); }
         }
         private string _total;
 
@@ -149,14 +149,14 @@ namespace FootballFieldManagement.UI.ViewModels
         public string StartTime
         {
             get { return _startTime; }
-            set { _startTime = value; OnPropertyChanged(); }
+            set { _startTime = value; OnPropertyChanged(); CalculatorPlayTime(); }
         }
         private string _endTime;
 
         public string EndTime
         {
             get { return _endTime; }
-            set { _endTime = value; OnPropertyChanged(); }
+            set { _endTime = value; OnPropertyChanged(); CalculatorPlayTime(); }
         }
         private string _playTime;
 
@@ -296,8 +296,12 @@ namespace FootballFieldManagement.UI.ViewModels
         }
         private void CalculatorFieldPrice()
         {
-            int FieldTypeId = _fieldRepository.AsQueryable().FirstOrDefault(x => x.Name == FieldName).FieldTypeId;
-            ListFieldPrice = new ObservableCollection<FieldPrice>(_fieldPriceRepository.AsQueryable().Where(x => x.FieldTypeId == FieldTypeId).ToList());
+            if(FieldName != null)
+            {
+                int FieldTypeId = _fieldRepository.AsQueryable().FirstOrDefault(x => x.Name == FieldName).FieldTypeId;
+                double tiensan = _fieldPriceRepository.AsQueryable().Where(x => x.FieldTypeId == FieldTypeId).FirstOrDefault().Price;
+                FieldPrice = (tiensan * Double.Parse(PlayTime)).ToString();
+            }
         }
         private void CalculatorPlayTime()
         {
@@ -308,7 +312,15 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 double starttime = StaticClass.ConvertTimeToDecimal(StartTime);
                 double endtime = StaticClass.ConvertTimeToDecimal(EndTime);
-                PlayTime = (starttime - endtime).ToString();
+                PlayTime = Math.Round((endtime - starttime), 2).ToString();
+                CalculatorFieldPrice();
+            }
+        }
+        private void CalculatorTotal()
+        {
+            if(FieldPrice != null && ProductPrice != null)
+            {
+                Total = (Double.Parse(FieldPrice) + Double.Parse(ProductPrice)).ToString();
             }
         }
         /*public void Validate()

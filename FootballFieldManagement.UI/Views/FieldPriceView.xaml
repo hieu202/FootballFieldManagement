@@ -61,18 +61,6 @@
                           SelectedItem="{Binding SelectedFieldType}"
                           Style="{StaticResource cboManage}" />
             </Grid>
-            <Grid Grid.Row="1"
-                  Grid.Column="1">
-                <TextBox Style="{StaticResource tbManage}"
-                         Text="{Binding StartTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }">
-                </TextBox>
-            </Grid>
-            <Grid Grid.Row="2"
-                  Grid.Column="1">
-                <TextBox Style="{StaticResource tbManage}"
-                         Text="{Binding EndTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                </TextBox>
-            </Grid>
             <Grid Grid.Row="3"
                   Grid.Column="1">
                 <TextBox Text="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -95,7 +83,7 @@
                     Height="40"
                     Grid.Column="1"
                     Content="Sửa"
-                    Command="{Binding SaveCommand}" />
+                    Command="{Binding UpdateCommand}" />
             <Button Height="40"
                     Grid.Column="2"
                     Content="Xóa"
@@ -107,7 +95,7 @@
                       AlternatingRowBackground="AntiqueWhite"
                       AlternationCount="2"
                       ItemsSource="{Binding ListFieldPrice, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding Selected}">
+                      SelectedItem="{Binding SelectedFieldPrice}">
                 <DataGrid.Columns>
                     <!-- Cột số thứ tự -->
                     <DataGridTextColumn Header="STT">
@@ -124,10 +112,6 @@
                     <DataGridTextColumn Header="Loại sân"
                                         IsReadOnly="True"
                                         Binding="{Binding Path=FieldType.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Từ giờ"
-                                        Binding="{Binding Path=StartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Đến giờ"
-                                        Binding="{Binding Path=EndTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <DataGridTextColumn Header="Giá"
                                         Binding="{Binding Path=Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </DataGrid.Columns>

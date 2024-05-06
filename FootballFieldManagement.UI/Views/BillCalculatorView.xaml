@@ -37,13 +37,13 @@
                         <DatePicker></DatePicker>
                     </GroupBox>
                     <GroupBox Header="Giờ vào">
-                        <TextBox Text="{Binding StartTime}" />
+                        <TextBox Text="{Binding StartTime, UpdateSourceTrigger=PropertyChanged}" />
                     </GroupBox>
                     <GroupBox Header="Giờ ra">
-                        <TextBox Text="{Binding EndTime}" />
+                        <TextBox Text="{Binding EndTime, UpdateSourceTrigger=PropertyChanged}" />
                     </GroupBox>
                     <GroupBox Header="Số giờ thuê">
-                        <TextBox Text="{Binding PlayTime}" />
+                        <TextBox Text="{Binding PlayTime, UpdateSourceTrigger=PropertyChanged}" />
                     </GroupBox>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
