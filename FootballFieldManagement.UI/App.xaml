@@ -48,6 +48,9 @@
             <DataTemplate DataType="{x:Type vm:BillCalculatorViewModel}">
                 <view:BillCalculatorView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:BillDisplayViewModel}">
+                <view:BillDisplayView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

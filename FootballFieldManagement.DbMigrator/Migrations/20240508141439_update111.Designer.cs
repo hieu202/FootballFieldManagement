@@ -4,6 +4,7 @@ using FootballFieldManagement.DbMigrator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootballFieldManagement.DbMigrator.Migrations
 {
     [DbContext(typeof(FootballFieldManagementDbContext))]
-    partial class FootballFieldManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240508141439_update111")]
+    partial class update111
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

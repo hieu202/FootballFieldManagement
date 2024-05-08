@@ -31,10 +31,11 @@
                 <StackPanel Orientation="Vertical">
                     <GroupBox Header="Khách hàng">
                         <ComboBox ItemsSource="{Binding ListCustomer}"
-                                  DisplayMemberPath="Name" />
+                                  DisplayMemberPath="Name"
+                                  SelectedItem="{Binding SelectedCustomer}"/>
                     </GroupBox>
                     <GroupBox Header="Ngày đá">
-                        <DatePicker></DatePicker>
+                        <DatePicker SelectedDate="{Binding DatePlay}"></DatePicker>
                     </GroupBox>
                     <GroupBox Header="Giờ vào">
                         <TextBox Text="{Binding StartTime, UpdateSourceTrigger=PropertyChanged}" />
@@ -90,6 +91,7 @@
                     <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
                 <StackPanel>
+                    <Button Content="Lưu" Command="{Binding SaveBillCommand}"/>
                     <Button Content="In phiếu" />
                     <Button Content="Hủy sân" />
                 </StackPanel>

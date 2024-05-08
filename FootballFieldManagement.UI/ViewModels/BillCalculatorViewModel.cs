@@ -76,6 +76,13 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _listCustomer; }
             set { _listCustomer = value; OnPropertyChanged(); }
         }
+        private ObservableCollection<ProductBill> _listProductBill;
+
+        public ObservableCollection<ProductBill> ListProductBill
+        {
+            get { return _listProductBill; }
+            set { _listProductBill = value; OnPropertyChanged(); }
+        }
         private ObservableCollection<Group> _listGroup;
 
         public ObservableCollection<Group> ListGroup
@@ -165,6 +172,12 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _playTime; }
             set { _playTime = value; OnPropertyChanged(); }
         }
+        private DateTime _datePlay;
+        public DateTime DatePlay
+        {
+            get { return _datePlay; }
+            set { _datePlay = value; OnPropertyChanged(); }
+        }
 
 
         public ICommand StartCommand { get; set; }
@@ -172,9 +185,12 @@ namespace FootballFieldManagement.UI.ViewModels
         IRepository<FieldType> _fieldTypeRepository = new Repository<FieldType>(StaticClass.FootballFieldManagementDbContext);
         IRepository<Customer> _customerRepository = new Repository<Customer>(StaticClass.FootballFieldManagementDbContext);
         IRepository<FieldPrice> _fieldPriceRepository = new Repository<FieldPrice>(StaticClass.FootballFieldManagementDbContext);
+        IRepository<Bill> _billRepository = new Repository<Bill>(StaticClass.FootballFieldManagementDbContext);
+        IRepository<ProductBill> _productBillRepository = new Repository<ProductBill>(StaticClass.FootballFieldManagementDbContext);
         public ICommand FieldCommand { get; set; }
         public ICommand AddProductCommand { get; set; }
         public ICommand SaveProductCommand { get; set; }
+        public ICommand SaveBillCommand { get; set; }
         public BillCalculatorViewModel()
         {
             LoadCombobox();
@@ -254,6 +270,43 @@ namespace FootballFieldManagement.UI.ViewModels
                 }
                 ListProduct = new ObservableCollection<Product>(products);
             });
+            SaveBillCommand = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, async p =>
+            {
+                Bill bill = new Bill()
+                {
+                    CustomerId = SelectedCustomer.Id,
+                    FieldId = _fieldRepository.AsQueryable().Where(x => x.Name == FieldName).FirstOrDefault().Id,
+                    StartTime = StartTime,
+                    EndTime = EndTime,
+                    DatePlay = DatePlay,
+                    Code = "MHD" + DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                    PriceField = Double.Parse(FieldPrice),
+                    PriceProduct = Double.Parse(ProductPrice),
+                    Total = Double.Parse(Total),
+                };
+                bill = await _billRepository.AddAsync(bill);
+                for (int i = 0; i < ListProduct.Count; i++)
+                {
+                    ProductBill productBill = new ProductBill()
+                    {
+                        ProductId = ListProduct[i].Id,
+                        quantity = ListProduct[i].Quality,
+                        BillId = _billRepository.AsQueryable().Where(x => x.StartTime == StartTime && x.EndTime == EndTime && x.DatePlay == DatePlay).FirstOrDefault().Id
+                    };
+                    productBill = await _productBillRepository.AddAsync(productBill);
+                }
+                if(bill != null)
+                {
+                    MessageBox.Show("Lưu hóa đơn thành công");
+                } else
+                {
+                    MessageBox.Show("Lỗi hệ thống");
+                }
+
+            });
         }
         private void LoadCombobox()
         {
@@ -296,7 +349,7 @@ namespace FootballFieldManagement.UI.ViewModels
         }
         private void CalculatorFieldPrice()
         {
-            if(FieldName != null)
+            if (FieldName != null)
             {
                 int FieldTypeId = _fieldRepository.AsQueryable().FirstOrDefault(x => x.Name == FieldName).FieldTypeId;
                 double tiensan = _fieldPriceRepository.AsQueryable().Where(x => x.FieldTypeId == FieldTypeId).FirstOrDefault().Price;
@@ -308,7 +361,8 @@ namespace FootballFieldManagement.UI.ViewModels
             if (String.IsNullOrEmpty(StartTime) || String.IsNullOrEmpty(EndTime) || IsValidTime(StartTime) == false || IsValidTime(EndTime) == false)
             {
                 PlayTime = "";
-            } else
+            }
+            else
             {
                 double starttime = StaticClass.ConvertTimeToDecimal(StartTime);
                 double endtime = StaticClass.ConvertTimeToDecimal(EndTime);
@@ -318,7 +372,7 @@ namespace FootballFieldManagement.UI.ViewModels
         }
         private void CalculatorTotal()
         {
-            if(FieldPrice != null && ProductPrice != null)
+            if (FieldPrice != null && ProductPrice != null)
             {
                 Total = (Double.Parse(FieldPrice) + Double.Parse(ProductPrice)).ToString();
             }

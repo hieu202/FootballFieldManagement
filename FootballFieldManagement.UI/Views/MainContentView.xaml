@@ -240,14 +240,14 @@
                 <TreeViewItem IsExpanded="True">
                     <TreeViewItem.Header>
                         <Button Background="Transparent"
-                                Command="{Binding DisplayFieldBookCommand}"
+                                Command="{Binding BillDisplayCommand}"
                                 BorderThickness="0">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="../Images/field.png"
                                        Height="20"
                                        Width="20"
                                        Margin="0, 0, 4, 0"></Image>
-                                <TextBlock Text="Xem lịch đặt sân" />
+                                <TextBlock Text="Xem hóa đơn" />
                             </StackPanel>
                         </Button>
                     </TreeViewItem.Header>

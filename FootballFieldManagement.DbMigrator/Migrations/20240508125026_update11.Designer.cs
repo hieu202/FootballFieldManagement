@@ -4,6 +4,7 @@ using FootballFieldManagement.DbMigrator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootballFieldManagement.DbMigrator.Migrations
 {
     [DbContext(typeof(FootballFieldManagementDbContext))]
-    partial class FootballFieldManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240508125026_update11")]
+    partial class update11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,12 +49,6 @@ namespace FootballFieldManagement.DbMigrator.Migrations
 
                     b.Property<int>("FieldId")
                         .HasColumnType("int");
-
-                    b.Property<double>("PriceField")
-                        .HasColumnType("float");
-
-                    b.Property<double>("PriceProduct")
-                        .HasColumnType("float");
 
                     b.Property<string>("StartTime")
                         .IsRequired()
@@ -276,7 +273,7 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("quantity")
+                    b.Property<int>("quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

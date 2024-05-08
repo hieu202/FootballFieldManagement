@@ -23,6 +23,7 @@ namespace FootballFieldManagement.UI.ViewModels
         public ICommand BookFieldCommand { get; set; }
         public ICommand DisplayFieldBookCommand { get; set; }
         public ICommand BillCalculatorCommand { get; set; }
+        public ICommand BillDisplayCommand { get; set; }
         public User CurrentUser
         {
             get
@@ -81,6 +82,10 @@ namespace FootballFieldManagement.UI.ViewModels
             BillCalculatorCommand = new RelayCommand<object>(p => true, p =>
             {
                 StaticClass.MainContent.CurrentViewModel = StaticClass.BillCalculatorViewModel;
+            });
+            BillDisplayCommand = new RelayCommand<object>(p => true, p =>
+            {
+                StaticClass.MainContent.CurrentViewModel = new BillDisplayViewModel();
             });
         }
         private void OnCurrenViewModelChanged()
