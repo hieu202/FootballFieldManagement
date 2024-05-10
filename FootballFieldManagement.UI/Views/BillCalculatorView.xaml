@@ -92,7 +92,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <Button Content="Lưu" Command="{Binding SaveBillCommand}"/>
-                    <Button Content="In phiếu" />
+                    <Button Content="In phiếu" Command="{Binding PrintBillCommand}" />
                     <Button Content="Hủy sân" />
                 </StackPanel>
                 <Grid Grid.Column="1">

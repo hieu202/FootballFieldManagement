@@ -3,10 +3,13 @@ using FootballFieldManagement.Core.Repositories;
 using FootballFieldManagement.Domain.Models;
 using FootballFieldManagement.UI.Commands;
 using FootballFieldManagement.UI.Views;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -191,6 +194,7 @@ namespace FootballFieldManagement.UI.ViewModels
         public ICommand AddProductCommand { get; set; }
         public ICommand SaveProductCommand { get; set; }
         public ICommand SaveBillCommand { get; set; }
+        public ICommand PrintBillCommand { get; set; }
         public BillCalculatorViewModel()
         {
             LoadCombobox();
@@ -298,14 +302,28 @@ namespace FootballFieldManagement.UI.ViewModels
                     };
                     productBill = await _productBillRepository.AddAsync(productBill);
                 }
-                if(bill != null)
+                if (bill != null)
                 {
                     MessageBox.Show("Lưu hóa đơn thành công");
-                } else
+                }
+                else
                 {
                     MessageBox.Show("Lỗi hệ thống");
                 }
 
+            });
+            PrintBillCommand = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                Report report = new Report();
+                report.ReportBillViewer.ReportPath = Path.Combine(Environment.CurrentDirectory, @"D:\Do An\FootballFieldManagement\FootballFieldManagement.UI\Report\ReportBill.rdlc");
+                var results = _billRepository.AsQueryable().Include(x=>x.ProductBills).ThenInclude(x => x.Product).ToList();
+                
+                report.ReportBillViewer.DataSources.Add(new BoldReports.Windows.ReportDataSource { Name = "FootballFieldManagementDbDataSet", Value = results });
+                report.ReportBillViewer.RefreshReport();
+                report.ShowDialog();
             });
         }
         private void LoadCombobox()

@@ -19,9 +19,17 @@
     <None Remove="Images\no-book.png" />
     <None Remove="Images\priter.png" />
     <None Remove="Images\user-icon.png" />
+    <None Remove="Report\ReportBill.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Report\ReportBill.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BoldReports.WPF" Version="6.1.35" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
     <PackageReference Include="PasswordBoxMVVM" Version="1.0.5" />
@@ -45,6 +53,21 @@
     <Resource Include="Images\no-book.png" />
     <Resource Include="Images\priter.png" />
     <Resource Include="Images\user-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="FootballFieldManagementDbDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FootballFieldManagementDbDataSet.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="FootballFieldManagementDbDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>FootballFieldManagementDbDataSet.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>
