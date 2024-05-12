@@ -70,13 +70,35 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _fieldBookCollectionView; }
             set { _fieldBookCollectionView = value; OnPropertyChanged(); }
         }
+        private DateTime _startDate = new DateTime(DateTime.Now.Year, 1, 1);
+
+        public DateTime StartDate
+        {
+            get { return _startDate; }
+            set { _startDate = value; OnPropertyChanged(); }
+        }
+        private DateTime _endDate = new DateTime(DateTime.Now.Year, 12, 31);
+
+        public DateTime EndDate
+        {
+            get { return _endDate; }
+            set { _endDate = value; OnPropertyChanged(); }
+        }
+
+
         public DisplayFieldBookViewModel()
         {
+            LoadCombobox();
             LoadData();
         }
         public IRepository<FieldBookManagement> _fieldBookRepository = new Repository<FieldBookManagement>(StaticClass.FootballFieldManagementDbContext);
         public IRepository<Customer> _customerRepository = new Repository<Customer>(StaticClass.FootballFieldManagementDbContext);
         public IRepository<Field> _fieldRepository = new Repository<Field>(StaticClass.FootballFieldManagementDbContext);
+        private void LoadCombobox()
+        {
+            ListCustomer = new ObservableCollection<Customer>(_customerRepository.AsQueryable().ToList());
+            ListField = new ObservableCollection<Field>(_fieldRepository.AsQueryable().ToList());
+        }
         private void LoadData()
         {
             // Khởi tạo truy vấn với Include các thực thể liên quan
@@ -86,15 +108,16 @@ namespace FootballFieldManagement.UI.ViewModels
 
             // Xây dựng truy vấn sử dụng điều kiện
             query = query.Where(x =>
-                (SelectedCustomer == null || x.Customer.Name == SelectedCustomer.Name) &&
-                (SelectedField == null || x.Field.Name == SelectedField.Name));
+                (SelectedCustomer == null || SelectedCustomer.Id == -1 || x.Customer.Name == SelectedCustomer.Name) &&
+                (SelectedField == null || SelectedField.Id == -1 || x.Field.Name == SelectedField.Name) &&
+                (StartDate == null || x.DateApply.Date >= StartDate.Date) &&
+                (EndDate == null || x.DateApply.Date <= EndDate.Date));
 
             // Tạo ObservableCollection từ kết quả truy vấn
             ListFieldBook = new ObservableCollection<FieldBookManagement>(query.ToList());
             FieldBookCollectionView = CollectionViewSource.GetDefaultView(ListFieldBook);
             FieldBookCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("Field.Name"));
-            ListCustomer = new ObservableCollection<Customer>(_customerRepository.AsQueryable().ToList());
-            ListField = new ObservableCollection<Field>(_fieldRepository.AsQueryable().ToList());
+
             if (!ListCustomer.Any(c => c.Id == -1 && c.Name == "Tất cả"))
             {
                 ListCustomer.Insert(0, new Customer { Id = -1, Name = "Tất cả" });
@@ -106,6 +129,8 @@ namespace FootballFieldManagement.UI.ViewModels
                 ListField.Insert(0, new Field { Id = -1, Name = "Tất cả" });
                 OnPropertyChanged(nameof(ListField));
             }
+/*            SelectedField = ListField.FirstOrDefault();
+            SelectedCustomer = ListCustomer.FirstOrDefault();*/
 
         }
     }
