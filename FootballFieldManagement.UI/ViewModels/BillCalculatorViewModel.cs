@@ -318,11 +318,6 @@ namespace FootballFieldManagement.UI.ViewModels
             }, p =>
             {
                 Report report = new Report();
-                report.ReportBillViewer.ReportPath = Path.Combine(Environment.CurrentDirectory, @"D:\Do An\FootballFieldManagement\FootballFieldManagement.UI\Report\ReportBill.rdlc");
-                var results = _billRepository.AsQueryable().Include(x=>x.ProductBills).ThenInclude(x => x.Product).ToList();
-                
-                report.ReportBillViewer.DataSources.Add(new BoldReports.Windows.ReportDataSource { Name = "FootballFieldManagementDbDataSet", Value = results });
-                report.ReportBillViewer.RefreshReport();
                 report.ShowDialog();
             });
         }
