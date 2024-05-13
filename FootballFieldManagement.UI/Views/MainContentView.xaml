@@ -9,17 +9,10 @@
              d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="6*" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="18*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <TreeView Grid.Column="0"
-                  Grid.RowSpan="2"
-                  Grid.ColumnSpan="2">
+        <TreeView Grid.Column="0">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="Margin"
@@ -116,7 +109,7 @@
                                 Command="{Binding UnitCommand}"
                                 BorderThickness="0">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="./Images/PriceInformation.png"
+                                <Image Source="../Images/priter.png"
                                        Height="20"
                                        Width="20"
                                        Margin="0, 0, 4, 0"></Image>
@@ -131,7 +124,7 @@
                                 Command="{Binding CategoryCommand}"
                                 BorderThickness="0">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="./Images/Replace.png"
+                                <Image Source="../Images/field.png"
                                        Height="20"
                                        Width="20"
                                        Margin="0, 0, 4, 0"></Image>
@@ -196,21 +189,6 @@
                         </Button>
                     </TreeViewItem.Header>
                 </TreeViewItem>
-                <TreeViewItem IsExpanded="True">
-                    <TreeViewItem.Header>
-                        <Button Background="Transparent"
-                                Command="{Binding ProductCommand}"
-                                BorderThickness="0">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="../Images/field.png"
-                                       Height="20"
-                                       Width="20"
-                                       Margin="0, 0, 4, 0"></Image>
-                                <TextBlock Text="Danh sách mặt hàng" />
-                            </StackPanel>
-                        </Button>
-                    </TreeViewItem.Header>
-                </TreeViewItem>
             </TreeViewItem>
             <TreeViewItem IsExpanded="True">
                 <TreeViewItem.Header>
@@ -252,46 +230,55 @@
                         </Button>
                     </TreeViewItem.Header>
                 </TreeViewItem>
-                <TreeViewItem IsExpanded="True">
-                    <TreeViewItem.Header>
-                        <Button Background="Transparent"
-                                Command="{Binding ProductCommand}"
-                                BorderThickness="0">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="../Images/field.png"
-                                       Height="20"
-                                       Width="20"
-                                       Margin="0, 0, 4, 0"></Image>
-                                <TextBlock Text="Danh sách mặt hàng" />
-                            </StackPanel>
-                        </Button>
-                    </TreeViewItem.Header>
-                </TreeViewItem>
             </TreeViewItem>
 
         </TreeView>
-        <Grid Grid.Column="2"
-              Margin="0,0,0,425"
-              Grid.RowSpan="2">
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Right">
-                <TextBlock Margin="0 1 0 5"
-                           Text="Xin chào, " />
-                <TextBlock Margin="0 1 0 5"
-                           Text="{Binding CurrentUser.UserName}" />
-                <Button Content="Đăng xuất"
-                        Margin="10 0 10 5"
-                        Command="{Binding LogoutCommand}"></Button>
-            </StackPanel>
-        </Grid>
         <Grid x:Name="MainContent"
-              Grid.Column="2"
-              Grid.Row="1">
-            <Grid.Resources>
+              Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"
+                  Margin="0,0,0,0">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <TextBlock Margin="0 1 0 5"
+                               Text="Xin chào, " VerticalAlignment="Center"/>
+                    <TextBlock Margin="0 1 0 5"
+                               Text="{Binding CurrentUser.UserName}" VerticalAlignment="Center" />
 
-            </Grid.Resources>
-
-            <ContentControl Content="{Binding CurrentViewModel}" />
+                    <Button Content="Đăng xuất"
+                            Margin="10 0 10 5"
+                            Command="{Binding LogoutCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background"
+                                        Value="#2196F3" />
+                                <Setter Property="Foreground"
+                                        Value="White" />
+                                <Setter Property="Padding"
+                                        Value="10" />
+                                <Setter Property="BorderThickness"
+                                        Value="0" />
+                                <Setter Property="Cursor"
+                                        Value="Hand" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#1976D2" />
+                                        <Setter Property="Foreground"
+                                                Value="Black" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <ContentControl Grid.Row="1"
+                            Content="{Binding CurrentViewModel}" />
         </Grid>
     </Grid>
 </UserControl>
