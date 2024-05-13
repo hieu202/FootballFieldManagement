@@ -69,18 +69,114 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+
             <Button Height="40"
-                    Content="Thêm"
-                    Command="{Binding AddCommand}" />
+                    Command="{Binding AddCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background"
+                                Value="Green" />
+                        <Setter Property="Foreground"
+                                Value="White" />
+                        <Setter Property="FontSize"
+                                Value="14" />
+                        <Setter Property="Margin"
+                                Value="5" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="FontWeight"
+                                        Value="Normal" />
+                                <Setter Property="Foreground"
+                                        Value="Black" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Images/them.png"
+                               Width="20"
+                               Height="20"
+                               Margin="0 0 5 0" />
+                        <TextBlock Text="Thêm"
+                                   FontWeight="Bold" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+
             <Button Margin="10 0"
                     Height="40"
                     Grid.Column="1"
-                    Content="Sửa"
-                    Command="{Binding SaveCommand}" />
+                    Command="{Binding SaveCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background"
+                                Value="Orange" />
+                        <Setter Property="Foreground"
+                                Value="White" />
+                        <Setter Property="FontSize"
+                                Value="14" />
+                        <Setter Property="Margin"
+                                Value="5" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="FontWeight"
+                                        Value="Bold" />
+                                <Setter Property="Foreground"
+                                        Value="Black" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Images/sua.png"
+                               Width="20"
+                               Height="20"
+                               Margin="0 0 5 0" />
+                        <TextBlock Text="Sửa"
+                                   FontWeight="Bold" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+
             <Button Height="40"
                     Grid.Column="2"
-                    Content="Xóa"
-                    Command="{Binding DeleteCommand}" />
+                    Command="{Binding DeleteCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background"
+                                Value="Red" />
+                        <Setter Property="Foreground"
+                                Value="White" />
+                        <Setter Property="FontSize"
+                                Value="14" />
+                        <Setter Property="Margin"
+                                Value="5" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="FontWeight"
+                                        Value="Normal" />
+                                <Setter Property="Foreground"
+                                        Value="Black" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Images/xoa.png"
+                               Width="20"
+                               Height="20"
+                               Margin="0 0 5 0" />
+                        <TextBlock Text="Xóa"
+                                   FontWeight="Bold" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
         </Grid>
         <Grid Grid.Row="2">
             <DataGrid AutoGenerateColumns="False"
@@ -101,11 +197,11 @@
                             </MultiBinding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Field Type"
+                    <DataGridTextColumn Header="Loại sân"
                                         Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Number of Person"
+                    <DataGridTextColumn Header="Số người"
                                         Binding="{Binding Path=NumberPerson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Description"
+                    <DataGridTextColumn Header="Miêu tả"
                                         Binding="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </DataGrid.Columns>
             </DataGrid>

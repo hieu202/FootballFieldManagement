@@ -18,7 +18,10 @@
     <None Remove="Images\menu-bar.png" />
     <None Remove="Images\no-book.png" />
     <None Remove="Images\priter.png" />
+    <None Remove="Images\sua.png" />
+    <None Remove="Images\them.png" />
     <None Remove="Images\user-icon.png" />
+    <None Remove="Images\xoa.png" />
     <None Remove="Report\ReportBill.rdlc" />
   </ItemGroup>
 
@@ -52,7 +55,10 @@
     <Resource Include="Images\menu-bar.png" />
     <Resource Include="Images\no-book.png" />
     <Resource Include="Images\priter.png" />
+    <Resource Include="Images\sua.png" />
+    <Resource Include="Images\them.png" />
     <Resource Include="Images\user-icon.png" />
+    <Resource Include="Images\xoa.png" />
   </ItemGroup>
 
   <ItemGroup>
