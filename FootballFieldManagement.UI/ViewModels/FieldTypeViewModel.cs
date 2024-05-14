@@ -23,7 +23,7 @@ namespace FootballFieldManagement.UI.ViewModels
             set
             {
                 _name = value;
-                OnPropertyChanged(Name);
+                OnPropertyChanged();
             }
         }
         private string _numberOfPerson;
@@ -33,7 +33,7 @@ namespace FootballFieldManagement.UI.ViewModels
             set
             {
                 _numberOfPerson = value;
-                OnPropertyChanged(NumberOfPerson);
+                OnPropertyChanged();
             }
         }
         private string _description;
@@ -43,10 +43,31 @@ namespace FootballFieldManagement.UI.ViewModels
             set
             {
                 _description = value;
-                OnPropertyChanged(Description);
+                OnPropertyChanged();
             }
         }
+        private FieldType _selectedItem;
+
+        public FieldType SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                _selectedItem = value;
+                if (SelectedItem != null)
+                {
+                    Name = SelectedItem.Name;
+                    NumberOfPerson = SelectedItem.NumberPerson;
+                    Description = SelectedItem.Description;
+                }
+                OnPropertyChanged();
+
+            }
+        }
+
         public ICommand AddCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
+        public ICommand UpdateCommand { get; set; }
         public FieldTypeViewModel()
         {
             LoadData();
@@ -69,14 +90,69 @@ namespace FootballFieldManagement.UI.ViewModels
                         Surcharge = "0"
                     };
                     newFieldType = await _fieldTypeRepository.AddAsync(newFieldType);
-                    if(newFieldType != null)
+                    if (newFieldType != null)
                     {
                         MessageBox.Show("Thêm loại sân thành công");
-                    } else
+                    }
+                    else
                     {
                         MessageBox.Show("Lỗi hệ thống");
                     }
                     LoadData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            });
+
+            UpdateCommand = new RelayCommand<object>(p =>
+            {
+                if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Description) || string.IsNullOrEmpty(NumberOfPerson))
+                    return false;
+                return true;
+            }, async p =>
+            {
+                try
+                {
+                    var updateFieldType = _fieldTypeRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedItem.Id);
+
+                    updateFieldType.Name = Name;
+                    updateFieldType.Description = Description;
+                    updateFieldType.NumberPerson = NumberOfPerson;
+                    updateFieldType.Surcharge = "0";
+
+                    updateFieldType = await _fieldTypeRepository.UpdateAsync(updateFieldType);
+                    if (updateFieldType != null)
+                    {
+                        MessageBox.Show("Sửa loại sân thành công");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Lỗi hệ thống");
+                    }
+                    LoadData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            });
+
+            DeleteCommand = new RelayCommand<object>(p =>
+            {
+                if (SelectedItem == null)
+                    return false;
+                return true;
+            },
+            async p =>
+            {
+                try
+                {
+                    var deleteUnit = _fieldTypeRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedItem.Id);
+                    await _fieldTypeRepository.DeleteAsync(deleteUnit);
+                    LoadData();
+
                 }
                 catch (Exception ex)
                 {

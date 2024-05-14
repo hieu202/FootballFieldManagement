@@ -108,7 +108,7 @@
             <Button Margin="10 0"
                     Height="40"
                     Grid.Column="1"
-                    Command="{Binding SaveCommand}">
+                    Command="{Binding UpdateCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background"
@@ -182,7 +182,7 @@
             <DataGrid AutoGenerateColumns="False"
                       AlternatingRowBackground="AntiqueWhite"
                       ItemsSource="{Binding ListFieldTypeView, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding Selected}">
+                      SelectedItem="{Binding SelectedItem}">
 
                 <DataGrid.Columns>
                     <!-- Cột số thứ tự -->
