@@ -35,6 +35,7 @@
                     <DatePicker Height="30"
                                 SelectedDate="{Binding EndDate}" />
                 </GroupBox>
+                <Button Height="40" Content="Xem chi tiết" Command="{Binding DetailCommand}" />
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1"

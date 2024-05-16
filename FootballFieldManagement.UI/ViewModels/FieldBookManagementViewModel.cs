@@ -80,6 +80,10 @@ namespace FootballFieldManagement.UI.ViewModels
             LoadCombox();
             AddCommand = new RelayCommand<object>(p =>
             {
+                if (ErrorValidateEndTime != "" || ErrorValidateStartTime != "")
+                    return false;
+                if (String.IsNullOrEmpty(Note) == true || String.IsNullOrEmpty(StartTime) == true || String.IsNullOrEmpty(EndTime) == true)
+                    return false;
                 return true;
             }, async p =>
             {
@@ -135,16 +139,27 @@ namespace FootballFieldManagement.UI.ViewModels
         {
             if (StartTime != null && IsValidTime(StartTime) == false)
             {
-                ErrorValidateStartTime = "Sai định dạng xy:zt";
+                ErrorValidateStartTime = "Sai định dạng (00:00)";
             }
-            else if (EndTime != null && IsValidTime(EndTime) == false)
+            if (EndTime != null && IsValidTime(EndTime) == false)
             {
-                ErrorValidateEndTime = "Sai định dạng xy:zt";
+                ErrorValidateEndTime = "Sai định dạng (00:00)";
             }
-            else
+            if (StartTime == null || IsValidTime(StartTime) == true)
             {
                 ErrorValidateStartTime = "";
+            }
+            if (EndTime == null || IsValidTime(EndTime) == true)
+            {
                 ErrorValidateEndTime = "";
+            }
+            if (StartTime != null && IsValidTime(StartTime) == true && EndTime != null && IsValidTime(EndTime) == true)
+            {
+                if ((StaticClass.ConvertTimeToDecimal(EndTime) - StaticClass.ConvertTimeToDecimal(StartTime)) <= 0.5)
+                {
+                    ErrorValidateStartTime = "Thời gian ko hợp lệ";
+                    ErrorValidateEndTime = "Thời gian ko hợp lệ";
+                }
             }
         }
         public static bool IsValidTime(string input)
