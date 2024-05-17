@@ -43,6 +43,11 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 _selectedFieldPrice = value;
                 OnPropertyChanged();
+                if (SelectedFieldPrice != null)
+                {
+                    Price = SelectedFieldPrice.Price.ToString();
+                    SelectedFieldType = SelectedFieldPrice.FieldType;
+                }
             }
         }
         private string _price;
@@ -54,6 +59,7 @@ namespace FootballFieldManagement.UI.ViewModels
         }
         private string _startTime;
         public ICommand AddCommand { get; set; }
+        public ICommand UpdateCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         private IRepository<FieldType> _fieldTypeRepository = new Repository<FieldType>(StaticClass.FootballFieldManagementDbContext);
         private IRepository<FieldPrice> _fieldPriceRepository = new Repository<FieldPrice>(StaticClass.FootballFieldManagementDbContext);
@@ -93,9 +99,40 @@ namespace FootballFieldManagement.UI.ViewModels
                     MessageBox.Show(ex.Message);
                 }
             });
+            UpdateCommand = new RelayCommand<object>(p =>
+            {
+                if (SelectedFieldPrice.FieldType != SelectedFieldType)
+                    return false;
+                if (String.IsNullOrEmpty(Price))
+                    return false;
+                return true;
+            }, async p =>
+            {
+                var updateFieldPrice = _fieldPriceRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedFieldPrice.Id);
+                updateFieldPrice.Price = SelectedFieldPrice.Price;
+                try
+                {
+                    updateFieldPrice = await _fieldPriceRepository.UpdateAsync(updateFieldPrice);
+                    if (updateFieldPrice != null)
+                    {
+                        MessageBox.Show("Sửa giá sân thành công");
+                        LoadData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Lỗi hệ thống");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            });
 
             DeleteCommand = new RelayCommand<object>((p) =>
             {
+                if (SelectedFieldPrice == null)
+                    return false;
                 return true;
             }, async p =>
             {
