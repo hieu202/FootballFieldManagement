@@ -44,7 +44,7 @@
                 <ComboBox ItemsSource="{Binding ListFieldType}"
                           DisplayMemberPath="Name"
                           SelectedValuePath="Id"
-                          SelectedItem="{Binding SelectedFieldType}"
+                          SelectedItem="{Binding SelectedFieldType, UpdateSourceTrigger=PropertyChanged}"
                           Style="{StaticResource cboManage}" />
             </Grid>
             <Grid Grid.Row="1"
@@ -101,7 +101,7 @@
             <Button Margin="10 0"
                     Height="40"
                     Grid.Column="1"
-                    Command="{Binding SaveCommand}">
+                    Command="{Binding UpdateCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background"
@@ -176,7 +176,7 @@
                       AlternatingRowBackground="AntiqueWhite"
                       AlternationCount="2"
                       ItemsSource="{Binding ListField, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding Selected}">
+                      SelectedItem="{Binding SelectedField}">
                 <DataGrid.Columns>
                     <!-- Cột số thứ tự -->
                     <DataGridTextColumn Header="STT">

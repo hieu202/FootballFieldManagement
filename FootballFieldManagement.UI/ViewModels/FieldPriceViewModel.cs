@@ -55,7 +55,7 @@ namespace FootballFieldManagement.UI.ViewModels
         public string Price
         {
             get { return _price; }
-            set { _price = value; }
+            set { _price = value; OnPropertyChanged(); }
         }
         private string _startTime;
         public ICommand AddCommand { get; set; }
@@ -70,6 +70,8 @@ namespace FootballFieldManagement.UI.ViewModels
             AddCommand = new RelayCommand<object>(p =>
             {
                 if (String.IsNullOrEmpty(Price))
+                    return false;
+                if(_fieldPriceRepository.AsQueryable().Any(x => x.FieldType == SelectedFieldType))
                     return false;
                 return true;
             }, async p =>
@@ -101,7 +103,7 @@ namespace FootballFieldManagement.UI.ViewModels
             });
             UpdateCommand = new RelayCommand<object>(p =>
             {
-                if (SelectedFieldPrice.FieldType != SelectedFieldType)
+                if (SelectedFieldPrice != null && SelectedFieldPrice.FieldType != SelectedFieldType)
                     return false;
                 if (String.IsNullOrEmpty(Price))
                     return false;
@@ -109,7 +111,7 @@ namespace FootballFieldManagement.UI.ViewModels
             }, async p =>
             {
                 var updateFieldPrice = _fieldPriceRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedFieldPrice.Id);
-                updateFieldPrice.Price = SelectedFieldPrice.Price;
+                updateFieldPrice.Price = Double.Parse(Price);
                 try
                 {
                     updateFieldPrice = await _fieldPriceRepository.UpdateAsync(updateFieldPrice);
