@@ -70,7 +70,7 @@ namespace FootballFieldManagement.UI.ViewModels
         public ObservableCollection<Product> ListProduct
         {
             get { return _listProduct; }
-            set { _listProduct = value; OnPropertyChanged(); CalculatorProduct(); }
+            set { _listProduct = value; OnPropertyChanged(); if (ListProduct != null) CalculatorProduct(); }
         }
         private ObservableCollection<Customer> _listCustomer;
 
@@ -138,14 +138,14 @@ namespace FootballFieldManagement.UI.ViewModels
         public string FieldPrice
         {
             get { return _fieldPrice; }
-            set { _fieldPrice = value; OnPropertyChanged(); CalculatorTotal(); }
+            set { _fieldPrice = value; OnPropertyChanged(); if (FieldPrice != null) CalculatorTotal(); }
         }
         private string _productPrice;
 
         public string ProductPrice
         {
             get { return _productPrice; }
-            set { _productPrice = value; OnPropertyChanged(); CalculatorTotal(); }
+            set { _productPrice = value; OnPropertyChanged(); if (ProductPrice != null) CalculatorTotal(); }
         }
         private string _total;
 
@@ -159,14 +159,14 @@ namespace FootballFieldManagement.UI.ViewModels
         public string StartTime
         {
             get { return _startTime; }
-            set { _startTime = value; OnPropertyChanged(); CalculatorPlayTime(); }
+            set { _startTime = value; OnPropertyChanged(); if (StartTime != null) CalculatorPlayTime(); }
         }
         private string _endTime;
 
         public string EndTime
         {
             get { return _endTime; }
-            set { _endTime = value; OnPropertyChanged(); CalculatorPlayTime(); }
+            set { _endTime = value; OnPropertyChanged(); if (EndTime != null) CalculatorPlayTime(); }
         }
         private string _playTime;
 
@@ -175,7 +175,7 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _playTime; }
             set { _playTime = value; OnPropertyChanged(); }
         }
-        private DateTime _datePlay;
+        private DateTime _datePlay = DateTime.Now;
         public DateTime DatePlay
         {
             get { return _datePlay; }
@@ -195,6 +195,7 @@ namespace FootballFieldManagement.UI.ViewModels
         public ICommand SaveProductCommand { get; set; }
         public ICommand SaveBillCommand { get; set; }
         public ICommand PrintBillCommand { get; set; }
+        public ICommand DestroyCommand { get; set; }
         public BillCalculatorViewModel()
         {
             LoadCombobox();
@@ -246,6 +247,8 @@ namespace FootballFieldManagement.UI.ViewModels
                 if (childWindow.ShowDialog() == false)
                 {
                     Product product = new Product();
+                    if (ListProduct == null)
+                        ListProduct = new ObservableCollection<Product>();
                     product = childWindow.dataGridProduct.SelectedValue as Product;
                     if (product != null)
                     {
@@ -273,6 +276,13 @@ namespace FootballFieldManagement.UI.ViewModels
                     }
                 }
                 ListProduct = new ObservableCollection<Product>(products);
+            });
+            DestroyCommand = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                reset();
             });
             SaveBillCommand = new RelayCommand<object>(p =>
             {
@@ -410,6 +420,33 @@ namespace FootballFieldManagement.UI.ViewModels
         {
             Regex regex = new Regex(@"^(?:[01][0-9]|2[0-3]):[0-5][0-9]$");
             return regex.IsMatch(input);
+        }
+        private void reset()
+        {
+            for (int i = 0; i < ListFieldType.Count; i++)
+            {
+                ListField = new ObservableCollection<Field>(_fieldRepository.AsQueryable().Where(x => x.FieldTypeId == ListFieldType[i].Id).ToList());
+                for (int j = 0; j < ListField.Count; j++)
+                {
+                    if (ListGroup[i].ListImage[j].ContentImage == FieldName)
+                    {
+                        ListGroup[i].ListImage[j].ImagePath = "D:\\Do An\\FootballFieldManagement\\FootballFieldManagement.UI\\Images\\no-book.png";
+                        break;
+                    }
+                }
+                FieldName = null;
+                StartTime = null;
+                EndTime = null;
+                PlayTime = null;
+                DatePlay = DateTime.Now;
+                SelectedCustomer = null;
+                ListProductBill = null;
+                ListProduct = null;
+                Quality = null;
+                FieldPrice = null;
+                ProductPrice = null;
+                Total = null;
+            }
         }
     }
 }

@@ -93,7 +93,7 @@
                 <StackPanel>
                     <Button Content="Lưu" Command="{Binding SaveBillCommand}"/>
                     <Button Content="In phiếu" Command="{Binding PrintBillCommand}" />
-                    <Button Content="Hủy sân" />
+                    <Button Content="Hủy sân" Command="{Binding DestroyCommand}" />
                 </StackPanel>
                 <Grid Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -122,11 +122,6 @@
         </Grid>
         <Grid Grid.Column="1">
             <StackPanel Orientation="Vertical">
-                <GroupBox Header="Loại sân">
-                    <ComboBox ItemsSource="{Binding ListFieldType}"
-                              DisplayMemberPath="Name"
-                              SelectedItem="{Binding SelectedFieldType}" />
-                </GroupBox>
                 <ListView ItemsSource="{Binding ListGroup}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
