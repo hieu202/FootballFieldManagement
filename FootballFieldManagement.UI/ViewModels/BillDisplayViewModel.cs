@@ -43,14 +43,14 @@ namespace FootballFieldManagement.UI.ViewModels
         public Customer SelectedCustomer
         {
             get { return _selectedCustomer; }
-            set { _selectedCustomer = value; }
+            set { _selectedCustomer = value; OnPropertyChanged(); }
         }
         private Field _selectedField;
 
         public Field SelectedField
         {
             get { return _selectedField; }
-            set { _selectedField = value; }
+            set { _selectedField = value; OnPropertyChanged(); }
         }
         private Bill _selectedBill;
 
