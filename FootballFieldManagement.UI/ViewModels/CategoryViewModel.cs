@@ -62,7 +62,7 @@ namespace FootballFieldManagement.UI.ViewModels
                     newCategory = await _categoryRepository.AddAsync(newCategory);
                     if (newCategory != null)
                     {
-                        MessageBox.Show("Thêm đơn vị thành công");
+                        MessageBox.Show("Thêm loại hàng thành công");
                     }
                     else
                     {

@@ -80,6 +80,14 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 _selectedProduct = value;
                 OnPropertyChanged();
+                if(SelectedProduct != null)
+                {
+                    SelectedUnit = SelectedProduct.Unit;
+                    SelectedCategory = SelectedProduct.Category;
+                    PriceOut = SelectedProduct.PriceOut.ToString();
+                    Code = SelectedProduct.Code;
+                    Name = SelectedProduct.Name;
+                }
             }
         }
         private IRepository<Product> _productRepository = new Repository<Product>(StaticClass.FootballFieldManagementDbContext);
@@ -150,14 +158,20 @@ namespace FootballFieldManagement.UI.ViewModels
                 if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(PriceOut)
                 || SelectedCategory == null || SelectedUnit == null)
                     return false;
+                if(SelectedProduct.Category != SelectedCategory || SelectedProduct.Unit != SelectedUnit)
+                    return false;
+                if(_productRepository.AsQueryable().Any(x => x.Name == Name ||  x.Code == Code || x.PriceOut == Double.Parse(PriceOut)))
+                    return false;
                 return true;
             }, async p =>
             {
                 try
                 {
-                    var updateProduct = _categoryRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedCategory.Id);
+                    var updateProduct = _productRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedCategory.Id);
                     updateProduct.Name = Name;
-                    updateProduct = await _categoryRepository.UpdateAsync(updateProduct);
+                    updateProduct.Code = Code;
+                    updateProduct.PriceOut = Double.Parse(PriceOut);
+                    updateProduct = await _productRepository.UpdateAsync(updateProduct);
                     if (updateProduct != null)
                     {
                         MessageBox.Show("Sửa thành công");
