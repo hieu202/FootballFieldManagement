@@ -24,6 +24,7 @@ namespace FootballFieldManagement.UI.ViewModels
         public ICommand DisplayFieldBookCommand { get; set; }
         public ICommand BillCalculatorCommand { get; set; }
         public ICommand BillDisplayCommand { get; set; }
+        public ICommand DeleteFieldBookCommand { get; set; }
         public User CurrentUser
         {
             get
@@ -69,7 +70,7 @@ namespace FootballFieldManagement.UI.ViewModels
             });
             CustomerCommand = new RelayCommand<object>(p => true, p =>
             {
-                StaticClass.MainContent.CurrentViewModel= new CustomerViewModel();
+                StaticClass.MainContent.CurrentViewModel = new CustomerViewModel();
             });
             BookFieldCommand = new RelayCommand<object>(p => true, p =>
             {
@@ -87,6 +88,11 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 StaticClass.MainContent.CurrentViewModel = new BillDisplayViewModel();
             });
+            DeleteFieldBookCommand = new RelayCommand<object>(p => true, p =>
+            {
+                StaticClass.MainContent.CurrentViewModel = new DeleteFieldBookViewModel();
+            });
+
         }
         private void OnCurrenViewModelChanged()
         {

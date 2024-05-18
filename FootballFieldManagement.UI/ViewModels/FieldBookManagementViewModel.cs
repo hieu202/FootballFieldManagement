@@ -105,6 +105,7 @@ namespace FootballFieldManagement.UI.ViewModels
                             StartTime = StartTime,
                             EndTime = EndTime,
                             Note = Note,
+                            IsDeleted = false
                         };
                         fieldBookManagement = await _bookRepository.AddAsync(fieldBookManagement);
                         if (fieldBookManagement != null)

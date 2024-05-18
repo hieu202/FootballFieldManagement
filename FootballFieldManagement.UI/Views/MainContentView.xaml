@@ -189,6 +189,21 @@
                         </Button>
                     </TreeViewItem.Header>
                 </TreeViewItem>
+                <TreeViewItem IsExpanded="True">
+                    <TreeViewItem.Header>
+                        <Button Background="Transparent"
+                                Command="{Binding DeleteFieldBookCommand}"
+                                BorderThickness="0">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="../Images/field.png"
+                                       Height="20"
+                                       Width="20"
+                                       Margin="0, 0, 4, 0"></Image>
+                                <TextBlock Text="Xem lịch hủy sân" />
+                            </StackPanel>
+                        </Button>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
             </TreeViewItem>
             <TreeViewItem IsExpanded="True">
                 <TreeViewItem.Header>
@@ -244,9 +259,11 @@
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right">
                     <TextBlock Margin="0 1 0 5"
-                               Text="Xin chào, " VerticalAlignment="Center"/>
+                               Text="Xin chào, "
+                               VerticalAlignment="Center" />
                     <TextBlock Margin="0 1 0 5"
-                               Text="{Binding CurrentUser.UserName}" VerticalAlignment="Center" />
+                               Text="{Binding CurrentUser.UserName}"
+                               VerticalAlignment="Center" />
 
                     <Button Content="Đăng xuất"
                             Margin="10 0 10 5"

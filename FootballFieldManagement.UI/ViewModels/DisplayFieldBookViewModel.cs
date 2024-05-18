@@ -103,6 +103,7 @@ namespace FootballFieldManagement.UI.ViewModels
         {
             // Khởi tạo truy vấn với Include các thực thể liên quan
             var query = _fieldBookRepository.AsQueryable()
+                .Where(x=> x.IsDeleted == false)
                 .Include(x => x.Customer)
                 .Include(x => x.Field) as IQueryable<FieldBookManagement>; // Đảm bảo kiểu dữ liệu trả về phù hợp
 
