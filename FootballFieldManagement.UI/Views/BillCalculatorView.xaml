@@ -30,9 +30,9 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical">
                     <GroupBox Header="Khách hàng">
-                        <ComboBox ItemsSource="{Binding ListCustomer}"
+                        <ComboBox ItemsSource="{Binding ListCustomer, UpdateSourceTrigger=PropertyChanged}"
                                   DisplayMemberPath="Name"
-                                  SelectedItem="{Binding SelectedCustomer}"/>
+                                  SelectedItem="{Binding SelectedCustomer}" />
                     </GroupBox>
                     <GroupBox Header="Ngày đá">
                         <DatePicker SelectedDate="{Binding DatePlay}"></DatePicker>
@@ -48,7 +48,8 @@
                     </GroupBox>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
-                    <Button Content="Đổi giờ" />
+                    <Button Content="Chọn từ đặt sân"
+                            Command="{Binding SelectedBookFieldCommand}" />
                     <Button Content="Bắt đầu"
                             Command="{Binding StartCommand}" />
                 </StackPanel>
@@ -91,9 +92,12 @@
                     <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
                 <StackPanel>
-                    <Button Content="Lưu" Command="{Binding SaveBillCommand}"/>
-                    <Button Content="In phiếu" Command="{Binding PrintBillCommand}" />
-                    <Button Content="Hủy sân" Command="{Binding DestroyCommand}" />
+                    <Button Content="Lưu"
+                            Command="{Binding SaveBillCommand}" />
+                    <Button Content="In phiếu"
+                            Command="{Binding PrintBillCommand}" />
+                    <Button Content="Hủy sân"
+                            Command="{Binding DestroyCommand}" />
                 </StackPanel>
                 <Grid Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -114,9 +118,15 @@
                     <TextBlock Grid.Row="2"
                                Grid.Column="0"
                                Text="Thành tiền" />
-                    <TextBox Text="{Binding FieldPrice}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox Text="{Binding ProductPrice}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox Text="{Binding Total}" Grid.Row="2" Grid.Column="1"/>
+                    <TextBox Text="{Binding FieldPrice}"
+                             Grid.Row="0"
+                             Grid.Column="1" />
+                    <TextBox Text="{Binding ProductPrice}"
+                             Grid.Row="1"
+                             Grid.Column="1" />
+                    <TextBox Text="{Binding Total}"
+                             Grid.Row="2"
+                             Grid.Column="1" />
                 </Grid>
             </Grid>
         </Grid>

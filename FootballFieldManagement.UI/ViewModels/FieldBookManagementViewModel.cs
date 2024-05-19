@@ -89,8 +89,8 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 try
                 {
-                    var pricesQuery = _bookRepository.AsQueryable().Where(x => x.DateApply.Date == DateApply.Date && x.FieldId == SelectedField.Id).ToList();
-                    if (pricesQuery.Any() && (StaticClass.ConvertTimeToDecimal(StartTime) < pricesQuery.Max(x => StaticClass.ConvertTimeToDecimal(x.EndTime))
+                    var pricesQuery = _bookRepository.AsQueryable().Where(x => x.DateApply.Date == DateApply.Date && x.FieldId == SelectedField.Id && x.IsDeleted == true).ToList();
+                      if (pricesQuery.Any() && (StaticClass.ConvertTimeToDecimal(StartTime) < pricesQuery.Max(x => StaticClass.ConvertTimeToDecimal(x.EndTime))
                     || StaticClass.ConvertTimeToDecimal(EndTime) < pricesQuery.Min(x => StaticClass.ConvertTimeToDecimal(x.StartTime))))
                     {
                         MessageBox.Show("Trùng giờ");

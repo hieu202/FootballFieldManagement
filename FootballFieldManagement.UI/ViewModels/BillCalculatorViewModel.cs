@@ -181,9 +181,24 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _datePlay; }
             set { _datePlay = value; OnPropertyChanged(); }
         }
+        private string _validateStartTime;
+
+        public string ValidateStartTime
+        {
+            get { return _validateStartTime; }
+            set { _validateStartTime = value; OnPropertyChanged(); }
+        }
+        private string _validateEndTime;
+
+        public string ValidateEndTime
+        {
+            get { return _validateEndTime; }
+            set { _validateEndTime = value; OnPropertyChanged(); }
+        }
 
 
         public ICommand StartCommand { get; set; }
+        public ICommand SelectedBookFieldCommand { get; set; }
         IRepository<Field> _fieldRepository = new Repository<Field>(StaticClass.FootballFieldManagementDbContext);
         IRepository<FieldType> _fieldTypeRepository = new Repository<FieldType>(StaticClass.FootballFieldManagementDbContext);
         IRepository<Customer> _customerRepository = new Repository<Customer>(StaticClass.FootballFieldManagementDbContext);
@@ -291,38 +306,46 @@ namespace FootballFieldManagement.UI.ViewModels
                 return true;
             }, async p =>
             {
-                Bill bill = new Bill()
+                var pricesQuery = _billRepository.AsQueryable().Where(x => x.DatePlay.Date == DatePlay.Date && x.Field.Name == FieldName).ToList();
+                if (pricesQuery.Any() && (StaticClass.ConvertTimeToDecimal(StartTime) < pricesQuery.Max(x => StaticClass.ConvertTimeToDecimal(x.EndTime))
+                || StaticClass.ConvertTimeToDecimal(EndTime) < pricesQuery.Min(x => StaticClass.ConvertTimeToDecimal(x.StartTime))))
                 {
-                    CustomerId = SelectedCustomer.Id,
-                    FieldId = _fieldRepository.AsQueryable().Where(x => x.Name == FieldName).FirstOrDefault().Id,
-                    StartTime = StartTime,
-                    EndTime = EndTime,
-                    DatePlay = DatePlay,
-                    Code = "MHD" + DateTime.Now.ToString("yyyyMMddHHmmssffff"),
-                    PriceField = Double.Parse(FieldPrice),
-                    PriceProduct = Double.Parse(ProductPrice),
-                    Total = Double.Parse(Total),
-                };
-                bill = await _billRepository.AddAsync(bill);
-                for (int i = 0; i < ListProduct.Count; i++)
-                {
-                    ProductBill productBill = new ProductBill()
-                    {
-                        ProductId = ListProduct[i].Id,
-                        quantity = ListProduct[i].Quality,
-                        BillId = _billRepository.AsQueryable().Where(x => x.StartTime == StartTime && x.EndTime == EndTime && x.DatePlay == DatePlay).FirstOrDefault().Id
-                    };
-                    productBill = await _productBillRepository.AddAsync(productBill);
-                }
-                if (bill != null)
-                {
-                    MessageBox.Show("Lưu hóa đơn thành công");
+                    MessageBox.Show("Đã tồn tại hóa đơn của sân này rồi");
                 }
                 else
                 {
-                    MessageBox.Show("Lỗi hệ thống");
+                    Bill bill = new Bill()
+                    {
+                        CustomerId = SelectedCustomer.Id,
+                        FieldId = _fieldRepository.AsQueryable().Where(x => x.Name == FieldName).FirstOrDefault().Id,
+                        StartTime = StartTime,
+                        EndTime = EndTime,
+                        DatePlay = DatePlay,
+                        Code = "MHD" + DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                        PriceField = Double.Parse(FieldPrice),
+                        PriceProduct = Double.Parse(ProductPrice),
+                        Total = Double.Parse(Total),
+                    };
+                    bill = await _billRepository.AddAsync(bill);
+                    for (int i = 0; i < ListProduct.Count; i++)
+                    {
+                        ProductBill productBill = new ProductBill()
+                        {
+                            ProductId = ListProduct[i].Id,
+                            quantity = ListProduct[i].Quality,
+                            BillId = _billRepository.AsQueryable().Where(x => x.StartTime == StartTime && x.EndTime == EndTime && x.DatePlay == DatePlay).FirstOrDefault().Id
+                        };
+                        productBill = await _productBillRepository.AddAsync(productBill);
+                    }
+                    if (bill != null)
+                    {
+                        MessageBox.Show("Lưu hóa đơn thành công");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Lỗi hệ thống");
+                    }
                 }
-
             });
             PrintBillCommand = new RelayCommand<object>(p =>
             {
@@ -331,6 +354,13 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 Report report = new Report();
                 report.ShowDialog();
+            });
+            SelectedBookFieldCommand = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                LoadCombobox();
             });
         }
         private void LoadCombobox()
@@ -378,7 +408,7 @@ namespace FootballFieldManagement.UI.ViewModels
             if (FieldName != null)
             {
                 int FieldTypeId = _fieldRepository.AsQueryable().FirstOrDefault(x => x.Name == FieldName).FieldTypeId;
-                if (_fieldPriceRepository.AsQueryable().Any(x=> x.FieldTypeId == FieldTypeId))
+                if (_fieldPriceRepository.AsQueryable().Any(x => x.FieldTypeId == FieldTypeId))
                 {
                     tiensan = _fieldPriceRepository.AsQueryable().Where(x => x.FieldTypeId == FieldTypeId).FirstOrDefault().Price;
                 }
@@ -438,11 +468,7 @@ namespace FootballFieldManagement.UI.ViewModels
                 ListField = new ObservableCollection<Field>(_fieldRepository.AsQueryable().Where(x => x.FieldTypeId == ListFieldType[i].Id).ToList());
                 for (int j = 0; j < ListField.Count; j++)
                 {
-                    if (ListGroup[i].ListImage[j].ContentImage == FieldName)
-                    {
-                        ListGroup[i].ListImage[j].ImagePath = "D:\\Do An\\FootballFieldManagement\\FootballFieldManagement.UI\\Images\\no-book.png";
-                        break;
-                    }
+                    ListGroup[i].ListImage[j].ImagePath = "D:\\Do An\\FootballFieldManagement\\FootballFieldManagement.UI\\Images\\no-book.png";
                 }
                 FieldName = null;
                 StartTime = null;
@@ -454,7 +480,7 @@ namespace FootballFieldManagement.UI.ViewModels
                 ListProduct = null;
                 Quality = null;
                 FieldPrice = null;
-                ProductPrice = null;
+                ProductPrice = "0";
                 Total = null;
             }
         }

@@ -1,5 +1,7 @@
-﻿using FootballFieldManagement.Core.Repositories;
+﻿using FootballFieldManagement.Core.Commands;
+using FootballFieldManagement.Core.Repositories;
 using FootballFieldManagement.Domain.Models;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace FootballFieldManagement.UI.ViewModels
 {
@@ -84,12 +88,45 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _endDate; }
             set { _endDate = value; OnPropertyChanged(); }
         }
+        private FieldBookManagement _selectedBookField;
 
+        public FieldBookManagement SelectedBookField
+        {
+            get { return _selectedBookField; }
+            set { _selectedBookField = value; }
+        }
 
+        public ICommand DeleteCommand { get; set; }
         public DisplayFieldBookViewModel()
         {
             LoadCombobox();
             LoadData();
+            DeleteCommand = new RelayCommand<object>(p =>
+            {
+                if (SelectedBookField == null)
+                    return false;
+                return true;
+            }, async p =>
+            {
+                var delete = _fieldBookRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedBookField.Id);
+                delete.IsDeleted = true;
+                try
+                {
+                    delete = await _fieldBookRepository.UpdateAsync(delete);
+                    if (delete != null)
+                    {
+                        MessageBox.Show("Hủy sân thành công");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Lỗi hệ thống");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            });
         }
         public IRepository<FieldBookManagement> _fieldBookRepository = new Repository<FieldBookManagement>(StaticClass.FootballFieldManagementDbContext);
         public IRepository<Customer> _customerRepository = new Repository<Customer>(StaticClass.FootballFieldManagementDbContext);
@@ -103,7 +140,7 @@ namespace FootballFieldManagement.UI.ViewModels
         {
             // Khởi tạo truy vấn với Include các thực thể liên quan
             var query = _fieldBookRepository.AsQueryable()
-                .Where(x=> x.IsDeleted == false)
+                .Where(x => x.IsDeleted == false)
                 .Include(x => x.Customer)
                 .Include(x => x.Field) as IQueryable<FieldBookManagement>; // Đảm bảo kiểu dữ liệu trả về phù hợp
 
@@ -130,8 +167,8 @@ namespace FootballFieldManagement.UI.ViewModels
                 ListField.Insert(0, new Field { Id = -1, Name = "Tất cả" });
                 OnPropertyChanged(nameof(ListField));
             }
-/*            SelectedField = ListField.FirstOrDefault();
-            SelectedCustomer = ListCustomer.FirstOrDefault();*/
+            /*            SelectedField = ListField.FirstOrDefault();
+                        SelectedCustomer = ListCustomer.FirstOrDefault();*/
 
         }
     }
