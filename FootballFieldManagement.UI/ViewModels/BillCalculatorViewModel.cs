@@ -159,14 +159,14 @@ namespace FootballFieldManagement.UI.ViewModels
         public string StartTime
         {
             get { return _startTime; }
-            set { _startTime = value; OnPropertyChanged(); if (StartTime != null) CalculatorPlayTime(); }
+            set { _startTime = value; OnPropertyChanged(); if (StartTime != null) CalculatorPlayTime(); Validate(); }
         }
         private string _endTime;
 
         public string EndTime
         {
             get { return _endTime; }
-            set { _endTime = value; OnPropertyChanged(); if (EndTime != null) CalculatorPlayTime(); }
+            set { _endTime = value; OnPropertyChanged(); if (EndTime != null) CalculatorPlayTime(); Validate(); }
         }
         private string _playTime;
 
@@ -196,7 +196,6 @@ namespace FootballFieldManagement.UI.ViewModels
             set { _validateEndTime = value; OnPropertyChanged(); }
         }
 
-
         public ICommand StartCommand { get; set; }
         public ICommand SelectedBookFieldCommand { get; set; }
         IRepository<Field> _fieldRepository = new Repository<Field>(StaticClass.FootballFieldManagementDbContext);
@@ -211,6 +210,7 @@ namespace FootballFieldManagement.UI.ViewModels
         public ICommand SaveBillCommand { get; set; }
         public ICommand PrintBillCommand { get; set; }
         public ICommand DestroyCommand { get; set; }
+        public ICommand DeleteProductCommand { get; set; }
         public BillCalculatorViewModel()
         {
             LoadCombobox();
@@ -292,6 +292,17 @@ namespace FootballFieldManagement.UI.ViewModels
                 }
                 ListProduct = new ObservableCollection<Product>(products);
             });
+            DeleteProductCommand = new RelayCommand<object>(p =>
+            {
+                if (SelectedProduct == null)
+                    return false;
+                return true;
+            }, p =>
+            {
+                var deleteProduct = ListProduct.Where(x => x.Id == SelectedProduct.Id).FirstOrDefault();
+                ListProduct.Remove(deleteProduct);
+                MessageBox.Show("Xóa sản phẩm thành công");
+            });
             DestroyCommand = new RelayCommand<object>(p =>
             {
                 return true;
@@ -364,12 +375,12 @@ namespace FootballFieldManagement.UI.ViewModels
                 if (StaticClass.SelectedBookFieldView.ShowDialog() == false)
                 {
                     StaticClass.SelectedBookFieldView = new SelectedBookFieldView();
-                    if(StaticClass.SelectedFieldBook.Customer != null)
+                    if (StaticClass.SelectedFieldBook.Customer != null)
                     {
-                        StartTime = StaticClass.SelectedFieldBook.StartTime;
-                        EndTime = StaticClass.SelectedFieldBook.EndTime;
                         SelectedCustomer = StaticClass.SelectedFieldBook.Customer;
                         FieldName = StaticClass.SelectedFieldBook.Field.Name;
+                        StartTime = StaticClass.SelectedFieldBook.StartTime;
+                        EndTime = StaticClass.SelectedFieldBook.EndTime;
                         for (int i = 0; i < ListFieldType.Count; i++)
                         {
                             ListField = new ObservableCollection<Field>(_fieldRepository.AsQueryable().Where(x => x.FieldTypeId == ListFieldType[i].Id).ToList());
@@ -463,22 +474,33 @@ namespace FootballFieldManagement.UI.ViewModels
                 Total = (Double.Parse(FieldPrice) + Double.Parse(ProductPrice)).ToString();
             }
         }
-        /*public void Validate()
+        public void Validate()
         {
             if (StartTime != null && IsValidTime(StartTime) == false)
             {
-                ErrorValidateStartTime = "Sai định dạng xy:zt";
+                ValidateStartTime = "Sai định dạng (00:00)";
             }
-            else if (EndTime != null && IsValidTime(EndTime) == false)
+            if (EndTime != null && IsValidTime(EndTime) == false)
             {
-                ErrorValidateEndTime = "Sai định dạng xy:zt";
+                ValidateEndTime = "Sai định dạng (00:00)";
             }
-            else
+            if (StartTime == null || IsValidTime(StartTime) == true)
             {
-                ErrorValidateStartTime = "";
-                ErrorValidateEndTime = "";
+                ValidateStartTime = "";
             }
-        }*/
+            if (EndTime == null || IsValidTime(EndTime) == true)
+            {
+                ValidateEndTime = "";
+            }
+            if (StartTime != null && IsValidTime(StartTime) == true && EndTime != null && IsValidTime(EndTime) == true)
+            {
+                if ((StaticClass.ConvertTimeToDecimal(EndTime) - StaticClass.ConvertTimeToDecimal(StartTime)) <= 0.5)
+                {
+                    ValidateStartTime = "Thời gian ko hợp lệ";
+                    ValidateEndTime = "Thời gian ko hợp lệ";
+                }
+            }
+        }
         public static bool IsValidTime(string input)
         {
             Regex regex = new Regex(@"^(?:[01][0-9]|2[0-3]):[0-5][0-9]$");

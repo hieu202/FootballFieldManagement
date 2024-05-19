@@ -14,10 +14,12 @@
     <None Remove="Images\field.png" />
     <None Remove="Images\field_type.png" />
     <None Remove="Images\key-icon.png" />
+    <None Remove="Images\lich.png" />
     <None Remove="Images\logo-haui.png" />
     <None Remove="Images\menu-bar.png" />
     <None Remove="Images\no-book.png" />
     <None Remove="Images\priter.png" />
+    <None Remove="Images\start.png" />
     <None Remove="Images\sua.png" />
     <None Remove="Images\them.png" />
     <None Remove="Images\user-icon.png" />
@@ -51,10 +53,12 @@
     <Resource Include="Images\field.png" />
     <Resource Include="Images\field_type.png" />
     <Resource Include="Images\key-icon.png" />
+    <Resource Include="Images\lich.png" />
     <Resource Include="Images\logo-haui.png" />
     <Resource Include="Images\menu-bar.png" />
     <Resource Include="Images\no-book.png" />
     <Resource Include="Images\priter.png" />
+    <Resource Include="Images\start.png" />
     <Resource Include="Images\sua.png" />
     <Resource Include="Images\them.png" />
     <Resource Include="Images\user-icon.png" />

@@ -48,23 +48,117 @@
                     </GroupBox>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
-                    <Button Content="Chọn từ đặt sân"
-                            Command="{Binding SelectedBookFieldCommand}" />
-                    <Button Content="Bắt đầu"
-                            Command="{Binding StartCommand}" />
+                    <Button Command="{Binding SelectedBookFieldCommand}"
+                            Height="40">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background"
+                                        Value="Orange" />
+                                <Setter Property="Foreground"
+                                        Value="White" />
+                                <Setter Property="FontSize"
+                                        Value="14" />
+                                <Setter Property="Margin"
+                                        Value="0" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="FontWeight"
+                                                Value="Normal" />
+                                        <Setter Property="Foreground"
+                                                Value="Black" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="../Images/lich.png"
+                                       Width="20"
+                                       Height="20"
+                                       Margin="0 0 3 0" />
+                                <TextBlock Text="Chọn đặt sân"
+                                           FontWeight="Bold" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Height="40"
+                            Command="{Binding StartCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background"
+                                        Value="Green" />
+                                <Setter Property="Foreground"
+                                        Value="White" />
+                                <Setter Property="FontSize"
+                                        Value="14" />
+                                <Setter Property="Margin"
+                                        Value="0 3 0 0" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="FontWeight"
+                                                Value="Normal" />
+                                        <Setter Property="Foreground"
+                                                Value="Black" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="../Images/start.png"
+                                       Width="20"
+                                       Height="20"
+                                       Margin="0 0 3 0" />
+                                <TextBlock Text="Bắt đầu"
+                                           FontWeight="Bold" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Foreground="Red"
+                               Text="{Binding ValidateStartTime, UpdateSourceTrigger=PropertyChanged}"
+                               Margin="0 26 0 0"/>
+                    <TextBlock Foreground="Red"
+                               Text="{Binding ValidateEndTime, UpdateSourceTrigger=PropertyChanged}"
+                               Margin="0 26 0 0"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="2">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Số lượng" />
-                        <TextBox Width="50"
-                                 Text="{Binding Quality, UpdateSourceTrigger=PropertyChanged}" />
-                        <Button Command="{Binding SaveProductCommand}"
-                                Content="Lưu" />
-                        <Button Command="{Binding AddProductCommand}"
-                                Content="Thêm" />
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Số lượng"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,10,0"
+                                   Foreground="Black"
+                                   FontSize="14" />
+                            <TextBox Width="50"
+                                     Text="{Binding Quality, UpdateSourceTrigger=PropertyChanged}"
+                                     VerticalAlignment="Center"
+                                     BorderBrush="Gray"
+                                     BorderThickness="1" />
+                            <Button Command="{Binding SaveProductCommand}"
+                                    Content="Lưu"
+                                    Margin="10,0,0,0"
+                                    Background="Orange"
+                                    Foreground="Black"
+                                    Padding="10,5" />
+                            <Button Command="{Binding AddProductCommand}"
+                                    Content="Thêm"
+                                    Margin="10,0,0,0"
+                                    Background="#4CAF50"
+                                    Foreground="Black"
+                                    Padding="10,5" />
+                            <Button Command="{Binding DeleteProductCommand}"
+                                    Content="Xóa"
+                                    Margin="10,0,0,0"
+                                    Background="#F44336"
+                                    Foreground="Black"
+                                    Padding="10,5" />
+                        </StackPanel>
                     </StackPanel>
+
                     <DataGrid AutoGenerateColumns="False"
                               AlternatingRowBackground="AntiqueWhite"
                               ItemsSource="{Binding ListProduct, UpdateSourceTrigger=PropertyChanged}"
@@ -93,11 +187,16 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <Button Content="Lưu"
-                            Command="{Binding SaveBillCommand}" />
-                    <Button Content="In phiếu"
-                            Command="{Binding PrintBillCommand}" />
+                            Command="{Binding SaveBillCommand}"
+                            Background="#4CAF50"
+                            Foreground="Black"
+                            Padding="10,5"
+                            Margin="0,0,0,3" />
                     <Button Content="Hủy sân"
-                            Command="{Binding DestroyCommand}" />
+                            Command="{Binding DestroyCommand}"
+                            Background="#F44336"
+                            Foreground="White"
+                            Padding="10,5" />
                 </StackPanel>
                 <Grid Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -120,13 +219,17 @@
                                Text="Thành tiền" />
                     <TextBox Text="{Binding FieldPrice}"
                              Grid.Row="0"
-                             Grid.Column="1" />
+                             Grid.Column="1" 
+                             FlowDirection="RightToLeft"/>
                     <TextBox Text="{Binding ProductPrice}"
                              Grid.Row="1"
-                             Grid.Column="1" />
+                             Grid.Column="1"
+                             FlowDirection="RightToLeft"/>
                     <TextBox Text="{Binding Total}"
                              Grid.Row="2"
-                             Grid.Column="1" />
+                             Grid.Column="1"
+                             FlowDirection="RightToLeft"
+                             FontWeight="Bold"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -135,7 +238,8 @@
                 <ListView ItemsSource="{Binding ListGroup}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Expander Header="{Binding FieldType}" IsExpanded="True">
+                            <Expander Header="{Binding FieldType}"
+                                      IsExpanded="True">
                                 <ListView x:Name="imageListBox"
                                           Margin="10"
                                           ItemsSource="{Binding ListImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
