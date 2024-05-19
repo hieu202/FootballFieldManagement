@@ -135,7 +135,7 @@
                 <ListView ItemsSource="{Binding ListGroup}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Expander Header="{Binding FieldType}">
+                            <Expander Header="{Binding FieldType}" IsExpanded="True">
                                 <ListView x:Name="imageListBox"
                                           Margin="10"
                                           ItemsSource="{Binding ListImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">

@@ -1,7 +1,9 @@
 ﻿using FootballFieldManagement.DbMigrator;
+using FootballFieldManagement.Domain.Models;
 using FootballFieldManagement.UI.State;
 using FootballFieldManagement.UI.States;
 using FootballFieldManagement.UI.ViewModels;
+using FootballFieldManagement.UI.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -34,5 +36,7 @@ namespace FootballFieldManagement.UI
             }
         }
         public static BillCalculatorViewModel BillCalculatorViewModel { get; set; } = new BillCalculatorViewModel();
+        public static SelectedBookFieldView SelectedBookFieldView { get; set; } = new SelectedBookFieldView();
+        public static FieldBookManagement SelectedFieldBook { get; set; } = new FieldBookManagement();
     }
 }

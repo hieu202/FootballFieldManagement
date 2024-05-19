@@ -7,6 +7,154 @@
         mc:Ignorable="d"
         Title="SelectedBookFieldView" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Label Content="Sân đã đặt"
+                   FontSize="24"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold"
+                   Foreground="Green" />
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0"
+                      Header="Khách hàng">
+                <ComboBox ItemsSource="{Binding ListCustomer, UpdateSourceTrigger=PropertyChanged}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="Id"
+                          SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}" />
+            </GroupBox>
+            <GroupBox Grid.Column="1"
+                      Header="Tên sân">
+                <ComboBox ItemsSource="{Binding ListField, UpdateSourceTrigger=PropertyChanged}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="Id"
+                          SelectedItem="{Binding SelectedField, UpdateSourceTrigger=PropertyChanged}" />
+            </GroupBox>
+            <GroupBox Grid.Column="2"
+                      Header="Từ ngày">
+                <DatePicker SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" />
+            </GroupBox>
+            <GroupBox Grid.Column="3"
+                      Header="Đến ngày">
+                <DatePicker SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}" />
+            </GroupBox>
+            <Button Height="40"
+                    Grid.Column="4"
+                    Command="{Binding SelectedCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background"
+                                Value="Green" />
+                        <Setter Property="Foreground"
+                                Value="White" />
+                        <Setter Property="FontSize"
+                                Value="14" />
+                        <Setter Property="Margin"
+                                Value="5" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="FontWeight"
+                                        Value="Normal" />
+                                <Setter Property="Foreground"
+                                        Value="Black" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Images/them.png"
+                               Width="20"
+                               Height="20"
+                               Margin="0 0 5 0" />
+                        <TextBlock Text="Chọn đặt sân"
+                                   FontWeight="Bold" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <ListView Grid.Row="2"
+                  ItemsSource="{Binding FieldBookCollectionView}"
+                  SelectedItem="{Binding SelectedBookField}">
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold"
+                                       FontSize="14"
+                                       Text="{Binding Name}" />
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander IsExpanded="True">
+                                            <Expander.Header>
+                                                <TextBlock FontWeight="Bold"
+                                                           FontSize="14"
+                                                           Text="{Binding Name}" />
+                                            </Expander.Header>
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListView.GroupStyle>
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Khách hàng"
+                                    Width="150"
+                                    DisplayMemberBinding="{Binding Customer.Name}" />
+                    <GridViewColumn Header="Ngày đá"
+                                    Width="90">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DateApply, StringFormat={}{0:MM/dd/yyyy}}"
+                                           Padding="10 0 0 0" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Giờ vào"
+                                    Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding StartTime}"
+                                           Padding="20 0 0 0" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Giờ ra"
+                                    Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding EndTime}"
+                                           Padding="20 0 0 0" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Ghi chú"
+                                    DisplayMemberBinding="{Binding Note}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

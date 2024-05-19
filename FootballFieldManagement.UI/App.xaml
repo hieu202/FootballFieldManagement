@@ -54,6 +54,9 @@
             <DataTemplate DataType="{x:Type vm:DeleteFieldBookViewModel}">
                 <view:DeleteFieldBookView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SelectedBookFieldViewModel}">
+                <view:SelectedBookFieldView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

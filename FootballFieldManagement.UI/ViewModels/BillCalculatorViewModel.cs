@@ -361,6 +361,29 @@ namespace FootballFieldManagement.UI.ViewModels
             }, p =>
             {
                 LoadCombobox();
+                if (StaticClass.SelectedBookFieldView.ShowDialog() == false)
+                {
+                    StaticClass.SelectedBookFieldView = new SelectedBookFieldView();
+                    if(StaticClass.SelectedFieldBook.Customer != null)
+                    {
+                        StartTime = StaticClass.SelectedFieldBook.StartTime;
+                        EndTime = StaticClass.SelectedFieldBook.EndTime;
+                        SelectedCustomer = StaticClass.SelectedFieldBook.Customer;
+                        FieldName = StaticClass.SelectedFieldBook.Field.Name;
+                        for (int i = 0; i < ListFieldType.Count; i++)
+                        {
+                            ListField = new ObservableCollection<Field>(_fieldRepository.AsQueryable().Where(x => x.FieldTypeId == ListFieldType[i].Id).ToList());
+                            for (int j = 0; j < ListField.Count; j++)
+                            {
+                                if (ListGroup[i].ListImage[j].ContentImage == FieldName)
+                                {
+                                    ListGroup[i].ListImage[j].ImagePath = "D:\\Do An\\FootballFieldManagement\\FootballFieldManagement.UI\\Images\\do-book.png";
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             });
         }
         private void LoadCombobox()
