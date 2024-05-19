@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FootballFieldManagement.DbMigrator.Migrations
 {
     /// <inheritdoc />
-    public partial class update : Migration
+    public partial class CreateDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -171,6 +171,39 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bills",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    FieldId = table.Column<int>(type: "int", nullable: false),
+                    StartTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EndTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DatePlay = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false),
+                    PriceField = table.Column<double>(type: "float", nullable: false),
+                    PriceProduct = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bills", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bills_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bills_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FieldBookManagements",
                 columns: table => new
                 {
@@ -181,7 +214,8 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                     DateApply = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EndTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -200,10 +234,47 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProductBills",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    quantity = table.Column<int>(type: "int", nullable: true),
+                    BillId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductBills", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductBills_Bills_BillId",
+                        column: x => x.BillId,
+                        principalTable: "Bills",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductBills_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "Password", "Phone", "UserName" },
                 values: new object[] { 1, "admin@gmail.com", "123456", "0123456", "admin" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bills_CustomerId",
+                table: "Bills",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bills_FieldId",
+                table: "Bills",
+                column: "FieldId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FieldBookManagements_CustomerId",
@@ -226,6 +297,16 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                 column: "FieldTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductBills_BillId",
+                table: "ProductBills",
+                column: "BillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductBills_ProductId",
+                table: "ProductBills",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
@@ -246,13 +327,19 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                 name: "FieldPrices");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "ProductBills");
 
             migrationBuilder.DropTable(
                 name: "Times");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Bills");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Customers");

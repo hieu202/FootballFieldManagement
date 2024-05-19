@@ -141,7 +141,7 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 await _fieldRepository.DeleteAsync(SelectedField);
                 MessageBox.Show("Xóa sân thành công");
-                LoadData()
+                LoadData();
             });
         }
         private IRepository<FieldType> _fieldTypeRepository = new Repository<FieldType>(StaticClass.FootballFieldManagementDbContext);

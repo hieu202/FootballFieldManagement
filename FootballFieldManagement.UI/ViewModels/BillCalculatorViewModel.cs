@@ -140,7 +140,7 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _fieldPrice; }
             set { _fieldPrice = value; OnPropertyChanged(); if (FieldPrice != null) CalculatorTotal(); }
         }
-        private string _productPrice;
+        private string _productPrice = "0";
 
         public string ProductPrice
         {
@@ -286,6 +286,8 @@ namespace FootballFieldManagement.UI.ViewModels
             });
             SaveBillCommand = new RelayCommand<object>(p =>
             {
+                if (String.IsNullOrEmpty(Total) || String.IsNullOrEmpty(FieldPrice))
+                    return false;
                 return true;
             }, async p =>
             {
@@ -372,10 +374,18 @@ namespace FootballFieldManagement.UI.ViewModels
         }
         private void CalculatorFieldPrice()
         {
+            double tiensan;
             if (FieldName != null)
             {
                 int FieldTypeId = _fieldRepository.AsQueryable().FirstOrDefault(x => x.Name == FieldName).FieldTypeId;
-                double tiensan = _fieldPriceRepository.AsQueryable().Where(x => x.FieldTypeId == FieldTypeId).FirstOrDefault().Price;
+                if (_fieldPriceRepository.AsQueryable().Any(x=> x.FieldTypeId == FieldTypeId))
+                {
+                    tiensan = _fieldPriceRepository.AsQueryable().Where(x => x.FieldTypeId == FieldTypeId).FirstOrDefault().Price;
+                }
+                else
+                {
+                    tiensan = 0;
+                }
                 FieldPrice = (tiensan * Double.Parse(PlayTime)).ToString();
             }
         }

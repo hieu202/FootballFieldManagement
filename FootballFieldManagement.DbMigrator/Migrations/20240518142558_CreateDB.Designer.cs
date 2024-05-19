@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootballFieldManagement.DbMigrator.Migrations
 {
     [DbContext(typeof(FootballFieldManagementDbContext))]
-    [Migration("20240505145520_update")]
-    partial class update
+    [Migration("20240518142558_CreateDB")]
+    partial class CreateDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,53 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("FootballFieldManagement.Domain.Models.Bill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DatePlay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EndTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FieldId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PriceField")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PriceProduct")
+                        .HasColumnType("float");
+
+                    b.Property<string>("StartTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("FieldId");
+
+                    b.ToTable("Bills");
+                });
 
             modelBuilder.Entity("FootballFieldManagement.Domain.Models.Category", b =>
                 {
@@ -117,6 +164,9 @@ namespace FootballFieldManagement.DbMigrator.Migrations
 
                     b.Property<int>("FieldId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Note")
                         .IsRequired()
@@ -222,6 +272,32 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("FootballFieldManagement.Domain.Models.ProductBill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BillId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BillId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductBills");
+                });
+
             modelBuilder.Entity("FootballFieldManagement.Domain.Models.Time", b =>
                 {
                     b.Property<int>("Id")
@@ -297,6 +373,25 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FootballFieldManagement.Domain.Models.Bill", b =>
+                {
+                    b.HasOne("FootballFieldManagement.Domain.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FootballFieldManagement.Domain.Models.Field", "Field")
+                        .WithMany()
+                        .HasForeignKey("FieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Field");
+                });
+
             modelBuilder.Entity("FootballFieldManagement.Domain.Models.Field", b =>
                 {
                     b.HasOne("FootballFieldManagement.Domain.Models.FieldType", "FieldType")
@@ -355,6 +450,30 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("FootballFieldManagement.Domain.Models.ProductBill", b =>
+                {
+                    b.HasOne("FootballFieldManagement.Domain.Models.Bill", "Bill")
+                        .WithMany("ProductBills")
+                        .HasForeignKey("BillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FootballFieldManagement.Domain.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bill");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("FootballFieldManagement.Domain.Models.Bill", b =>
+                {
+                    b.Navigation("ProductBills");
                 });
 #pragma warning restore 612, 618
         }

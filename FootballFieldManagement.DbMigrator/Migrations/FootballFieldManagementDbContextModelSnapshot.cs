@@ -62,6 +62,10 @@ namespace FootballFieldManagement.DbMigrator.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("FieldId");
+
                     b.ToTable("Bills");
                 });
 
@@ -157,6 +161,9 @@ namespace FootballFieldManagement.DbMigrator.Migrations
 
                     b.Property<int>("FieldId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Note")
                         .IsRequired()
@@ -361,6 +368,25 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                             Phone = "0123456",
                             UserName = "admin"
                         });
+                });
+
+            modelBuilder.Entity("FootballFieldManagement.Domain.Models.Bill", b =>
+                {
+                    b.HasOne("FootballFieldManagement.Domain.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FootballFieldManagement.Domain.Models.Field", "Field")
+                        .WithMany()
+                        .HasForeignKey("FieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Field");
                 });
 
             modelBuilder.Entity("FootballFieldManagement.Domain.Models.Field", b =>
