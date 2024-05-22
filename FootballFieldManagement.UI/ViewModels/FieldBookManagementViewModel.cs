@@ -89,7 +89,7 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 try
                 {
-                    var pricesQuery = _bookRepository.AsQueryable().Where(x => x.DateApply.Date == DateApply.Date && x.FieldId == SelectedField.Id && x.IsDeleted == true).ToList();
+                    var pricesQuery = _bookRepository.AsQueryable().Where(x => x.DateApply.Date == DateApply.Date && x.FieldId == SelectedField.Id && x.IsDeleted == false).ToList();
                       if (pricesQuery.Any() && (StaticClass.ConvertTimeToDecimal(StartTime) < pricesQuery.Max(x => StaticClass.ConvertTimeToDecimal(x.EndTime))
                     || StaticClass.ConvertTimeToDecimal(EndTime) < pricesQuery.Min(x => StaticClass.ConvertTimeToDecimal(x.StartTime))))
                     {

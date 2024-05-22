@@ -110,7 +110,7 @@ namespace FootballFieldManagement.UI.ViewModels
         private readonly IRepository<ProductBill> _productBillRepository = new Repository<ProductBill>(StaticClass.FootballFieldManagementDbContext);
         private void LoadData()
         {
-            ListBill = new ObservableCollection<Bill>(_billRepository.AsQueryable().Include(x => x.Customer).Include(x => x.Field).ToList());
+            ListBill = new ObservableCollection<Bill>(_billRepository.AsQueryable().Include(x => x.Customer).Include(x => x.Field).OrderByDescending(x => x.DatePlay).ToList());
         }
         private void LoadCombobox()
         {

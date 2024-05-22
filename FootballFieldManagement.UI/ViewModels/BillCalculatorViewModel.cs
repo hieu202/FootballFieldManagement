@@ -301,6 +301,7 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 var deleteProduct = ListProduct.Where(x => x.Id == SelectedProduct.Id).FirstOrDefault();
                 ListProduct.Remove(deleteProduct);
+                CalculatorProduct();
                 MessageBox.Show("Xóa sản phẩm thành công");
             });
             DestroyCommand = new RelayCommand<object>(p =>
@@ -378,6 +379,7 @@ namespace FootballFieldManagement.UI.ViewModels
                     if (StaticClass.SelectedFieldBook.Customer != null)
                     {
                         SelectedCustomer = StaticClass.SelectedFieldBook.Customer;
+                        DatePlay = StaticClass.SelectedFieldBook.DateApply;
                         FieldName = StaticClass.SelectedFieldBook.Field.Name;
                         StartTime = StaticClass.SelectedFieldBook.StartTime;
                         EndTime = StaticClass.SelectedFieldBook.EndTime;

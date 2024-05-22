@@ -99,7 +99,7 @@ namespace FootballFieldManagement.UI.ViewModels
         {
             LoadCombobox();
             LoadData();
-            
+
         }
         public IRepository<FieldBookManagement> _fieldBookRepository = new Repository<FieldBookManagement>(StaticClass.FootballFieldManagementDbContext);
         public IRepository<Customer> _customerRepository = new Repository<Customer>(StaticClass.FootballFieldManagementDbContext);
@@ -115,7 +115,7 @@ namespace FootballFieldManagement.UI.ViewModels
             var query = _fieldBookRepository.AsQueryable()
                 .Where(x => x.IsDeleted == true)
                 .Include(x => x.Customer)
-                .Include(x => x.Field) as IQueryable<FieldBookManagement>; // Đảm bảo kiểu dữ liệu trả về phù hợp
+                .Include(x => x.Field).OrderByDescending(x => x.DateApply) as IQueryable<FieldBookManagement>; // Đảm bảo kiểu dữ liệu trả về phù hợp
 
             // Xây dựng truy vấn sử dụng điều kiện
             query = query.Where(x =>

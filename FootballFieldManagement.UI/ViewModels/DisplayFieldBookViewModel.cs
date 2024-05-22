@@ -121,6 +121,7 @@ namespace FootballFieldManagement.UI.ViewModels
                     {
                         MessageBox.Show("Lỗi hệ thống");
                     }
+                    LoadData();
                 }
                 catch (Exception ex)
                 {
@@ -142,7 +143,7 @@ namespace FootballFieldManagement.UI.ViewModels
             var query = _fieldBookRepository.AsQueryable()
                 .Where(x => x.IsDeleted == false)
                 .Include(x => x.Customer)
-                .Include(x => x.Field) as IQueryable<FieldBookManagement>; // Đảm bảo kiểu dữ liệu trả về phù hợp
+                .Include(x => x.Field).OrderByDescending(x => x.DateApply) as IQueryable<FieldBookManagement>; // Đảm bảo kiểu dữ liệu trả về phù hợp
 
             // Xây dựng truy vấn sử dụng điều kiện
             query = query.Where(x =>
