@@ -43,14 +43,32 @@ namespace FootballFieldManagement.UI.ViewModels
         public Customer SelectedCustomer
         {
             get { return _selectedCustomer; }
-            set { _selectedCustomer = value; OnPropertyChanged(); }
+            set 
+            {
+                if( _selectedCustomer != value )
+                {
+                    _selectedCustomer = value;
+                    LoadData();
+                    OnPropertyChanged();
+
+                }
+            }
         }
         private Field _selectedField;
 
         public Field SelectedField
         {
             get { return _selectedField; }
-            set { _selectedField = value; OnPropertyChanged(); }
+            set
+            {
+                if (_selectedField != value)
+                {
+                    _selectedField = value; 
+                    LoadData();
+                    OnPropertyChanged();
+
+                }
+            }
         }
         private Bill _selectedBill;
 
@@ -60,25 +78,25 @@ namespace FootballFieldManagement.UI.ViewModels
             set { _selectedBill = value; OnPropertyChanged(); }
         }
 
-        private string _startDate;
+        private DateTime _startDate = DateTime.Now;
 
-        public string StartDate
+        public DateTime StartDate
         {
             get { return _startDate; }
-            set { _startDate = value; OnPropertyChanged(); }
+            set { _startDate = value; OnPropertyChanged(); LoadData(); }
         }
-        private string _endDate;
+        private DateTime _endDate = DateTime.Now;
 
-        public string EndDate
+        public DateTime EndDate
         {
             get { return _endDate; }
-            set { _endDate = value; OnPropertyChanged(); }
+            set { _endDate = value; OnPropertyChanged(); LoadData(); }
         }
         public ICommand DetailCommand { get; set; }
         public BillDisplayViewModel()
         {
-            LoadData();
             LoadCombobox();
+            LoadData();
             DetailCommand = new RelayCommand<object>(p =>
             {
                 if (_selectedBill == null)
@@ -110,14 +128,30 @@ namespace FootballFieldManagement.UI.ViewModels
         private readonly IRepository<ProductBill> _productBillRepository = new Repository<ProductBill>(StaticClass.FootballFieldManagementDbContext);
         private void LoadData()
         {
-            ListBill = new ObservableCollection<Bill>(_billRepository.AsQueryable().Include(x => x.Customer).Include(x => x.Field).OrderByDescending(x => x.DatePlay).ToList());
+            //ListBill = new ObservableCollection<Bill>(_billRepository.AsQueryable().Include(x => x.Customer).Include(x => x.Field).OrderByDescending(x => x.DatePlay).ToList());
+            var query = _billRepository.AsQueryable().Include(x => x.Customer).Include(x => x.Field).OrderByDescending(x => x.DatePlay) as IQueryable<Bill>;
+            query = query.Where(x =>
+                (SelectedCustomer == null || SelectedCustomer.Id == -1 || x.Customer.Name == SelectedCustomer.Name) &&
+                (SelectedField == null || SelectedField.Id == -1 || x.Field.Name == SelectedField.Name) &&
+                (StartDate == null || x.DatePlay.Date >= StartDate.Date) &&
+                (EndDate == null || x.DatePlay.Date <= EndDate.Date));
+            ListBill = new ObservableCollection<Bill>(query.ToList());
+            if (!ListCustomer.Any(c => c.Id == -1 && c.Name == "Tất cả"))
+            {
+                ListCustomer.Insert(0, new Customer { Id = -1, Name = "Tất cả" });
+                OnPropertyChanged(nameof(ListCustomer));
+            }
+            //SelectedCustomer = ListCustomer[0];
+            if (!ListField.Any(c => c.Id == -1 && c.Name == "Tất cả"))
+            {
+                ListField.Insert(0, new Field { Id = -1, Name = "Tất cả" });
+                OnPropertyChanged(nameof(ListField));
+            }
         }
         private void LoadCombobox()
         {
             ListCustomer = new ObservableCollection<Customer>(_customerRepository.AsQueryable().ToList());
-            SelectedCustomer = ListCustomer.FirstOrDefault();
             ListField = new ObservableCollection<Field>(_fieldRepository.AsQueryable().ToList());
-            SelectedField = ListField.FirstOrDefault();
         }
     }
 }
