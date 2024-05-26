@@ -339,15 +339,18 @@ namespace FootballFieldManagement.UI.ViewModels
                         Total = Double.Parse(Total),
                     };
                     bill = await _billRepository.AddAsync(bill);
-                    for (int i = 0; i < ListProduct.Count; i++)
+                    if(bill != null)
                     {
-                        ProductBill productBill = new ProductBill()
+                        for (int i = 0; i < ListProduct.Count; i++)
                         {
-                            ProductId = ListProduct[i].Id,
-                            quantity = ListProduct[i].Quality,
-                            BillId = _billRepository.AsQueryable().Where(x => x.StartTime == StartTime && x.EndTime == EndTime && x.DatePlay == DatePlay).FirstOrDefault().Id
-                        };
-                        productBill = await _productBillRepository.AddAsync(productBill);
+                            ProductBill productBill = new ProductBill()
+                            {
+                                ProductId = ListProduct[i].Id,
+                                quantity = ListProduct[i].Quality,
+                                BillId = bill.Id
+                            };
+                            productBill = await _productBillRepository.AddAsync(productBill);
+                        }
                     }
                     if (bill != null)
                     {

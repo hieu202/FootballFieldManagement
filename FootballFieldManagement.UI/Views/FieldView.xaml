@@ -190,9 +190,9 @@
                             </MultiBinding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Name"
+                    <DataGridTextColumn Header="Tên sân"
                                         Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Field Type"
+                    <DataGridTextColumn Header="Loại sân"
                                         IsReadOnly="True"
                                         Binding="{Binding Path=FieldType.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </DataGrid.Columns>

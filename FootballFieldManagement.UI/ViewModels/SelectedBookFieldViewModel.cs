@@ -73,19 +73,19 @@ namespace FootballFieldManagement.UI.ViewModels
             get { return _fieldBookCollectionView; }
             set { _fieldBookCollectionView = value; OnPropertyChanged(); }
         }
-        private DateTime _startDate = new DateTime(DateTime.Now.Year, 1, 1);
+        private DateTime _startDate = DateTime.Now;
 
         public DateTime StartDate
         {
             get { return _startDate; }
-            set { _startDate = value; OnPropertyChanged(); }
+            set { _startDate = value; OnPropertyChanged(); LoadData(); }
         }
-        private DateTime _endDate = new DateTime(DateTime.Now.Year, 12, 31);
+        private DateTime _endDate = DateTime.Now;
 
         public DateTime EndDate
         {
             get { return _endDate; }
-            set { _endDate = value; OnPropertyChanged(); }
+            set { _endDate = value; OnPropertyChanged(); LoadData(); }
         }
         private FieldBookManagement _selectedBookField;
 

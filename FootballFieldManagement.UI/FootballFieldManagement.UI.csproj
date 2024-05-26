@@ -9,20 +9,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\customer.png" />
     <None Remove="Images\do-book.png" />
     <None Remove="Images\field-price.png" />
     <None Remove="Images\field.png" />
     <None Remove="Images\field_type.png" />
+    <None Remove="Images\hoadon.png" />
     <None Remove="Images\key-icon.png" />
     <None Remove="Images\lich.png" />
+    <None Remove="Images\loaihang.png" />
     <None Remove="Images\logo-haui.png" />
     <None Remove="Images\menu-bar.png" />
     <None Remove="Images\no-book.png" />
+    <None Remove="Images\noxem.png" />
     <None Remove="Images\priter.png" />
+    <None Remove="Images\sanpham.png" />
     <None Remove="Images\start.png" />
     <None Remove="Images\sua.png" />
     <None Remove="Images\them.png" />
+    <None Remove="Images\thongke.png" />
+    <None Remove="Images\tinhtien.png" />
+    <None Remove="Images\unit.png" />
     <None Remove="Images\user-icon.png" />
+    <None Remove="Images\xem.png" />
     <None Remove="Images\xoa.png" />
     <None Remove="Report\ReportBill.rdlc" />
   </ItemGroup>
@@ -48,20 +57,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\customer.png" />
     <Resource Include="Images\do-book.png" />
     <Resource Include="Images\field-price.png" />
     <Resource Include="Images\field.png" />
     <Resource Include="Images\field_type.png" />
+    <Resource Include="Images\hoadon.png" />
     <Resource Include="Images\key-icon.png" />
     <Resource Include="Images\lich.png" />
+    <Resource Include="Images\loaihang.png" />
     <Resource Include="Images\logo-haui.png" />
     <Resource Include="Images\menu-bar.png" />
     <Resource Include="Images\no-book.png" />
+    <Resource Include="Images\noxem.png" />
     <Resource Include="Images\priter.png" />
+    <Resource Include="Images\sanpham.png" />
     <Resource Include="Images\start.png" />
     <Resource Include="Images\sua.png" />
     <Resource Include="Images\them.png" />
+    <Resource Include="Images\thongke.png" />
+    <Resource Include="Images\tinhtien.png" />
+    <Resource Include="Images\unit.png" />
     <Resource Include="Images\user-icon.png" />
+    <Resource Include="Images\xem.png" />
     <Resource Include="Images\xoa.png" />
   </ItemGroup>
 

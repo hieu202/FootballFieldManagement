@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FootballFieldManagement.DbMigrator.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDB : Migration
+    public partial class updatedatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -92,7 +92,8 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -263,8 +264,8 @@ namespace FootballFieldManagement.DbMigrator.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Email", "Password", "Phone", "UserName" },
-                values: new object[] { 1, "admin@gmail.com", "123456", "0123456", "admin" });
+                columns: new[] { "Id", "Email", "Password", "Phone", "Role", "UserName" },
+                values: new object[] { 1, "admin@gmail.com", "123456", "0123456", 0, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bills_CustomerId",

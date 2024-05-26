@@ -88,75 +88,77 @@
                 </Button.Content>
             </Button>
         </Grid>
-        <ListView Grid.Row="2"
-                  ItemsSource="{Binding FieldBookCollectionView}"
-                  SelectedItem="{Binding SelectedBookField}">
-            <ListView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock FontWeight="Bold"
-                                       FontSize="14"
-                                       Text="{Binding Name}" />
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                    <GroupStyle.ContainerStyle>
-                        <Style TargetType="{x:Type GroupItem}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type GroupItem}">
-                                        <Expander IsExpanded="True">
-                                            <Expander.Header>
-                                                <TextBlock FontWeight="Bold"
-                                                           FontSize="14"
-                                                           Text="{Binding Name}" />
-                                            </Expander.Header>
-                                            <ItemsPresenter />
-                                        </Expander>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </GroupStyle.ContainerStyle>
-                </GroupStyle>
-            </ListView.GroupStyle>
+        <StackPanel Grid.Row="2">
+            <ListView ItemsSource="{Binding FieldBookCollectionView}"
+                      SelectedItem="{Binding SelectedBookField}">
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="Bold"
+                                           FontSize="14"
+                                           Text="{Binding Name}" />
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                                            <Expander IsExpanded="True">
+                                                <Expander.Header>
+                                                    <TextBlock FontWeight="Bold"
+                                                               FontSize="14"
+                                                               Text="{Binding Name}" />
+                                                </Expander.Header>
+                                                <ItemsPresenter />
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </ListView.GroupStyle>
 
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Khách hàng"
-                                    Width="150"
-                                    DisplayMemberBinding="{Binding Customer.Name}" />
-                    <GridViewColumn Header="Ngày đá"
-                                    Width="90">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding DateApply, StringFormat={}{0:MM/dd/yyyy}}"
-                                           Padding="10 0 0 0" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Giờ vào"
-                                    Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding StartTime}"
-                                           Padding="20 0 0 0" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Giờ ra"
-                                    Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding EndTime}"
-                                           Padding="20 0 0 0" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Ghi chú"
-                                    DisplayMemberBinding="{Binding Note}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Khách hàng"
+                                        Width="150"
+                                        DisplayMemberBinding="{Binding Customer.Name}" />
+                        <GridViewColumn Header="Ngày đá"
+                                        Width="90">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DateApply, StringFormat={}{0:MM/dd/yyyy}}"
+                                               Padding="10 0 0 0" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Giờ vào"
+                                        Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding StartTime}"
+                                               Padding="20 0 0 0" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Giờ ra"
+                                        Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding EndTime}"
+                                               Padding="20 0 0 0" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Ghi chú"
+                                        DisplayMemberBinding="{Binding Note}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

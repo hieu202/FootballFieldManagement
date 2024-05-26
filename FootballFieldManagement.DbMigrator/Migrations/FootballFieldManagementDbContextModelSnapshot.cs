@@ -351,6 +351,9 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -366,6 +369,7 @@ namespace FootballFieldManagement.DbMigrator.Migrations
                             Email = "admin@gmail.com",
                             Password = "123456",
                             Phone = "0123456",
+                            Role = 0,
                             UserName = "admin"
                         });
                 });

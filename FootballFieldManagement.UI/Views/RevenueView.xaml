@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="FootballFieldManagement.UI.Views.RevenueView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:FootballFieldManagement.UI.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             Background="White">
+    <Grid>
+        <StackPanel Width="400"
+                    Margin="0 20 0 0">
+            <Label Content="Thống kê doanh thu"
+                   HorizontalAlignment="Center"
+                   FontSize="24"
+                   Foreground="Green" />
+            <GroupBox Header="Loại sân">
+                <ComboBox DisplayMemberPath="Name"
+                          ItemsSource="{Binding ListFieldType}"
+                          SelectedItem="{Binding SelectedFieldType}"/>
+            </GroupBox>
+            <GroupBox Header="Từ ngày">
+                <DatePicker SelectedDate="{Binding StartDate}" />
+            </GroupBox>
+            <GroupBox Header="Đến ngày">
+                <DatePicker SelectedDate="{Binding EndDate}" />
+            </GroupBox>
+            <GroupBox Header="Tiền sân">
+                <TextBox Text="{Binding FieldPrice, UpdateSourceTrigger=PropertyChanged}" />
+            </GroupBox>
+            <GroupBox Header="Tiền mặt hàng">
+                <TextBox Text="{Binding ProductPrice, UpdateSourceTrigger=PropertyChanged}" />
+            </GroupBox>
+            <GroupBox Header="Thành tiền">
+                <TextBox Text="{Binding Total, UpdateSourceTrigger=PropertyChanged}" />
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</UserControl>

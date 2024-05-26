@@ -103,7 +103,8 @@ namespace FootballFieldManagement.UI.ViewModels
                             UserName = UserName,
                             Email = Email,
                             Phone = Phone,
-                            Password = Password
+                            Password = Password,
+                            Role = 1,
                         };
                         user = await _repositoryUser.AddAsync(newUser);
                         if(user != null)

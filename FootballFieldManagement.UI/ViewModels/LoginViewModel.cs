@@ -18,7 +18,7 @@ namespace FootballFieldManagement.UI.ViewModels
         private string _email;
         public string Email
         {
-            get => "1";
+            get => _email;
             set
             {
                 _email = value;
@@ -28,7 +28,7 @@ namespace FootballFieldManagement.UI.ViewModels
         private string _password;
         public string Password
         {
-            get => "111111";
+            get => _password;
             set
             {
                 _password = value;

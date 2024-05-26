@@ -22,6 +22,8 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        FontWeight="Bold"
+                       FontSize="24"
+                       Foreground="Green"
                        Text="{Binding FieldName, UpdateSourceTrigger=PropertyChanged}" />
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>

@@ -159,7 +159,7 @@
             <DataGrid AutoGenerateColumns="False"
                       AlternatingRowBackground="AntiqueWhite"
                       ItemsSource="{Binding ListCategory, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding Selected}">
+                      SelectedItem="{Binding SelectedCategory}">
 
                 <DataGrid.Columns>
                     <!-- Cột số thứ tự -->

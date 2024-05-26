@@ -19,21 +19,21 @@ namespace FootballFieldManagement.UI.ViewModels
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set { _name = value; OnPropertyChanged(); }
         }
         private string _code;
 
         public string Code
         {
             get { return _code; }
-            set { _code = value; }
+            set { _code = value; OnPropertyChanged(); }
         }
         private string _priceOut;
 
         public string PriceOut
         {
             get { return _priceOut; }
-            set { _priceOut = value; }
+            set { _priceOut = value; OnPropertyChanged(); }
         }
 
 
@@ -147,6 +147,7 @@ namespace FootballFieldManagement.UI.ViewModels
                 {
                     Product deleteProduct = _productRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedProduct.Id);
                     await _productRepository.DeleteAsync(deleteProduct);
+                    LoadData();
                 }
                 catch (Exception ex)
                 {
@@ -158,23 +159,21 @@ namespace FootballFieldManagement.UI.ViewModels
                 if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(PriceOut)
                 || SelectedCategory == null || SelectedUnit == null)
                     return false;
-                if(SelectedProduct.Category != SelectedCategory || SelectedProduct.Unit != SelectedUnit)
-                    return false;
-                if(_productRepository.AsQueryable().Any(x => x.Name == Name ||  x.Code == Code || x.PriceOut == Double.Parse(PriceOut)))
+                if(SelectedProduct.Category != SelectedCategory || SelectedProduct.Unit != SelectedUnit || Code != SelectedProduct.Code)
                     return false;
                 return true;
             }, async p =>
             {
                 try
                 {
-                    var updateProduct = _productRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedCategory.Id);
+                    var updateProduct = _productRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedProduct.Id);
                     updateProduct.Name = Name;
                     updateProduct.Code = Code;
                     updateProduct.PriceOut = Double.Parse(PriceOut);
                     updateProduct = await _productRepository.UpdateAsync(updateProduct);
                     if (updateProduct != null)
                     {
-                        MessageBox.Show("Sửa thành công");
+                        MessageBox.Show("Sửa sản phẩm thành công");
                     }
                     else
                     {

@@ -21,6 +21,7 @@ namespace FootballFieldManagement.DbMigrator.Configurations
                 Phone = "0123456",
                 Email = "admin@gmail.com",
                 Password = "123456",
+                Role = 0,
             });
         }
     }

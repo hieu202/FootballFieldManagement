@@ -25,6 +25,7 @@ namespace FootballFieldManagement.UI.ViewModels
         public ICommand BillCalculatorCommand { get; set; }
         public ICommand BillDisplayCommand { get; set; }
         public ICommand DeleteFieldBookCommand { get; set; }
+        public ICommand RevenueCommand { get; set; }
         public User CurrentUser
         {
             get
@@ -36,9 +37,18 @@ namespace FootballFieldManagement.UI.ViewModels
                 OnPropertyChanged(nameof(CurrentUser));
             }
         }
+        private bool _isRole;
+
+        public bool IsRole
+        {
+            get { return _isRole; }
+            set { _isRole = value; }
+        }
+
         public MainContentViewModel()
         {
             StaticClass.MainContent.CurrentViewModelChanged += OnCurrenViewModelChanged;
+            Authentication();
             LogoutCommand = new RelayCommand<object>(p => true, p =>
             {
                 StaticClass.Navigator.CurrentViewModel = new LoginViewModel();
@@ -92,11 +102,25 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 StaticClass.MainContent.CurrentViewModel = new DeleteFieldBookViewModel();
             });
+            RevenueCommand = new RelayCommand<object>(p => true, p =>
+            {
+                StaticClass.MainContent.CurrentViewModel = new RevenueViewModel();
+            });
 
         }
         private void OnCurrenViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
+        }
+        private void Authentication()
+        {
+            if(StaticClass.UserStore.CurrentUser.Role == 0)
+            {
+                IsRole = true;
+            } else
+            {
+                IsRole = false;
+            }
         }
     }
 }

@@ -50,6 +50,8 @@ namespace FootballFieldManagement.UI.ViewModels
             {
                 if (String.IsNullOrEmpty(Name))
                     return false;
+                if(_categoryRepository.AsQueryable().Any(x=>x.Name == Name))
+                    return false;
                 return true;
             }, async p =>
             {
@@ -87,6 +89,7 @@ namespace FootballFieldManagement.UI.ViewModels
                 {
                     var deleteCategory = _categoryRepository.AsQueryable().FirstOrDefault(x => x.Id == SelectedCategory.Id);
                     await _categoryRepository.DeleteAsync(deleteCategory);
+                    MessageBox.Show("Xóa thành công");
                     LoadData();
 
                 }
